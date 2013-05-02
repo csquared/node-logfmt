@@ -13,9 +13,11 @@ exports.parse = function(line) {
       value = value.substring(1, value.length-1)
     }
     if(value == '') value = true;
-    if(/\d+/.test(value)) value = parseInt(value);
+    if(/\A\d+\Z/.test(value)) value = parseInt(value);
     attrs[key] = value
   })
 
   return attrs;
 }
+
+exports.body_parser = require('./logfmt-body-parser.js')

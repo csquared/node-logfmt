@@ -4,7 +4,7 @@ var app    = require('express')();
 var assert = require('assert');
 var http   = require('http');
 
-var logfmt   = require('../logfmt-body-parser');
+var logfmt   = require('../logfmt').body_parser;
 
 app.use(logfmt());
 
