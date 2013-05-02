@@ -1,14 +1,18 @@
 #! /usr/bin/env node
 
 var logfmt = require('../lib/logfmt')
-
-process.stdin.resume();
 process.stdin.setEncoding('utf8');
 
+var data = ''
 process.stdin.on('data', function(chunk) {
-  console.log(JSON.stringify(logfmt.parse(chunk)))
+  data += chunk;
 })
 
 process.stdin.on('end', function(){
+  data.trim().split("\n").forEach(function(line){
+    console.log(JSON.stringify(logfmt.parse(line)))
+  })
   process.exit(0);
 })
+
+process.stdin.resume();
