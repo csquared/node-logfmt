@@ -4,14 +4,23 @@ var logfmt = require('../logfmt')
 process.stdin.setEncoding('utf8');
 
 var data = ''
+var last = null
+
+var println = function(line) {
+  console.log(JSON.stringify(logfmt.parse(line.trim())))
+}
+
 process.stdin.on('data', function(chunk) {
-  data += chunk;
+  data = chunk.split("\n")
+  if(last) println(last);
+  data.slice(0,-1).forEach(function(line){
+    println(line)
+  })
+  last = data[data.length]
 })
 
 process.stdin.on('end', function(){
-  data.trim().split("\n").forEach(function(line){
-    console.log(JSON.stringify(logfmt.parse(line)))
-  })
+  if(last) println(last);
   process.exit(0);
 })
 
