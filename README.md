@@ -1,20 +1,24 @@
 # node-logfmt
 
+## install
+
+    npm install logfmt
+
 ## use
 
 ### straight up
 
 ```javascript
-var logfmt = require('logfmt'),
+var logfmt = require('logfmt');
 
-logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf")
-//=>{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
+logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12")
+//=>{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
 ```
 
 ### express middleware
 
 ```javascript
-var logfmt   = require('logfmt-body-parser');
+var logfmt   = require('logfmt').body_parser;
 
 app.use(logfmt());
 
