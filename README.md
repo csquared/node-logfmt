@@ -52,4 +52,4 @@ curl -X POST --header 'Content-Type: application/logplex-1' -d "foo=bar a=14 baz
 
 ## caveats
 
-I use a regex instead of a goto-based state machine.  Haters gonna hate. :P
+I use a regex and haven't optimized much for performance yet.
