@@ -1,0 +1,2 @@
+echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | bin/logfmt
+echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf\nfoo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | bin/logfmt

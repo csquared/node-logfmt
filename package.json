@@ -1,0 +1,22 @@
+{
+  "name": "logfmt",
+  "version": "0.0.0",
+  "description": "Key-Value log line parser",
+  "main": "main.js",
+  "scripts": {
+    "test": "bin/test"
+  },
+  "devDependencies" : {
+    "express" : "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csquared/node-logfmt"
+  },
+  "keywords": [
+    "Log",
+    "Parser"
+  ],
+  "author": "csquared",
+  "license": "BSD"
+}

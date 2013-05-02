@@ -1,0 +1,14 @@
+#! /usr/bin/env node
+
+var logfmt = require('../lib/logfmt')
+
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+
+process.stdin.on('data', function(chunk) {
+  console.log(JSON.stringify(logfmt.parse(chunk)))
+})
+
+process.stdin.on('end', function(){
+  process.exit(0);
+})
