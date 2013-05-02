@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-var logfmt = require('../lib/logfmt')
+var logfmt = require('../logfmt')
 process.stdin.setEncoding('utf8');
 
 var data = ''

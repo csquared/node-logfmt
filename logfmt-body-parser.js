@@ -1,4 +1,4 @@
-var body_parser = require('./body_parser')
+var body_parser = require('./lib/body_parser')
 var logfmt = require('./logfmt')
 
 var logplex_body_parser = function (body) {
