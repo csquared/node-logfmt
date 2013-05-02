@@ -1,5 +1,5 @@
 #! /usr/bin/env sh
 
-bin/test_straight_up
-bin/test_express
-bin/test_cmd_line
+test/test_straight_up
+test/test_express
+test/test_cmd_line

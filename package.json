@@ -6,6 +6,7 @@
   "scripts": {
     "test": "bin/test"
   },
+  "bin": { "logfmt": "./bin/logfmt" },
   "devDependencies" : {
     "express" : "*"
   },
