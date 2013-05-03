@@ -1,8 +1,6 @@
 #include <node.h>
 #include <v8.h>
 #include <string>
-#include <iostream>
-#include <regex>
 
 using namespace v8;
 using namespace std;
