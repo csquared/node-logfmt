@@ -5,7 +5,6 @@
 using namespace v8;
 using namespace std;
 
-
 Handle<Value> logfmt_parse( const Arguments& args ) {
   HandleScope scope;
   Local<Object> result = Object::New();
