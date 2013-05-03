@@ -21,6 +21,7 @@ exports.parse = function(line) {
     attrs[key] = value
   })
 
+
   return attrs;
 }
 
@@ -40,4 +41,8 @@ exports.log = function(data, sink) {
   sink.write(line.substring(0,line.length-1) + "\n");
 }
 
-exports.extension = require('./build/Release/logfmt-extension');
+var extension = require('./build/Release/logfmt-extension')
+
+exports.parse2 = function(line) {
+  return extension.parse(line);
+}
