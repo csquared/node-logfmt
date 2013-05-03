@@ -1,6 +1,6 @@
 exports.parse = function(line) {
 
-  var pairs = line.match(/([a-zA-Z0-9\%\_\-\.\^]+)=?(([a-zA-Z0-9\.\-\_\.\/]+)|("([^\"]+)"))?/g)
+  var pairs = line.match(/([a-zA-Z0-9\%\_\-\.\^]+)=?(([a-zA-Z0-9\.\-\_\.\/\@]+)|("([^\"]+)"))?/g)
   var attrs = {}
 
   if(!pairs) { return attrs }
