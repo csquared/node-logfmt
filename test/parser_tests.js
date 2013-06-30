@@ -1,11 +1,10 @@
 var logfmt = require('../logfmt'),
     assert = require('assert');
 
-var test_string = "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf ";
-test_string += "code=H12 path=/hello/user@foo.com/close";
 
 test("readme string parses", function(){
-
+  var test_string = "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf ";
+  test_string += "code=H12 path=/hello/user@foo.com/close";
   var result = logfmt.parse(test_string)
   assert.equal( "H12", result["code"])
   assert.equal( "bar", result["foo"])
