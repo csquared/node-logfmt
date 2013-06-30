@@ -4,11 +4,12 @@
   "description": "Key-Value log line parser",
   "main": "logfmt.js",
   "scripts": {
-    "test": "bin/test"
+    "test": "./test/test"
   },
   "bin": { "logfmt": "./bin/logfmt" },
   "devDependencies" : {
-    "express" : "*"
+    "express" : "3.*",
+    "mocha" : "*"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,8 @@
   },
   "keywords": [
     "Log",
-    "Parser"
+    "Parser",
+    "logfmt"
   ],
   "author": "csquared",
   "license": "BSD"

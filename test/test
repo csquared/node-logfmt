@@ -1,5 +1,5 @@
 #! /usr/bin/env sh
 
-test/test_straight_up
+mocha
 test/test_express
 test/test_cmd_line
