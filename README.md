@@ -54,10 +54,10 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 
 ### express middleware
 
-    logfmt.body_parser();
+Requires `express` to be installed
 
 ```javascript
-var logfmt   = require('logfmt').body_parser;
+var logfmt   = require('logfmt-body-parser');
 
 app.use(logfmt());
 
