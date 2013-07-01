@@ -4,9 +4,46 @@
 
     npm install logfmt
 
-## use
+# use
 
-### straight up
+```javascript
+var logfmt = require('logfmt');
+```
+
+## logging
+
+### `logfmt.log()`
+
+Defaults to logging to `process.stdout`
+
+```javascript
+var logfmt = require('logfmt');
+logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
+//=> foo=bar a=14 baz="hello kitty"
+```
+
+### customizing logging location
+
+`log()` Accepts as 2nd arg anything that responds to `write(string)`
+```javascript
+var logfmt = require('logfmt');
+logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'}, process.stderr)
+//=> foo=bar a=14 baz="hello kitty"
+```
+
+Overwrite the default location by setting `.sink`
+```javascript
+var logfmt = require('logfmt');
+logfmt.sink = process.stderr
+
+logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
+//=> foo=bar a=14 baz="hello kitty"
+```
+
+
+## parser
+
+### `logfmt.parse()`
 
 ```javascript
 var logfmt = require('logfmt');
@@ -16,6 +53,8 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 ```
 
 ### express middleware
+
+    logfmt.body_parser();
 
 ```javascript
 var logfmt   = require('logfmt').body_parser;
@@ -43,12 +82,23 @@ test it:
 curl -X POST --header 'Content-Type: application/logplex-1' -d "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" http://localhost:3000/logs
 ```
 
-
 ### command line
+
+accepts lines on STDIN and converts them to json
+
 
     echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt
     { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
 
+#### reverse
+
+accepts JSON on STDIN and converts them to logfmt
+
+    echo '{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }' | logfmt -r
+    foo=bar a=14 baz="hello kitty" cool%story=bro f=true %^asdf=true
+
+    echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt | logfmt -r | logfmt
+    { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
 
 ## caveats
 
