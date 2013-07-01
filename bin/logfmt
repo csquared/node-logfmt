@@ -3,11 +3,21 @@
 var logfmt = require('../logfmt')
 process.stdin.setEncoding('utf8');
 
-var data = ''
-var last = null
+var argv = process.argv.slice(2);
+var data = '';
+var last = null;
+var println;
 
-var println = function(line) {
-  console.log(JSON.stringify(logfmt.parse(line.trim())))
+if(argv[0] == '-r'){
+  //reverse -- convert json to logfmt logs
+  println = function(line) {
+    logfmt.log(JSON.parse(line.trim()))
+  }
+} else {
+  //convert logfmt logs to json
+  println = function(line) {
+    console.log(JSON.stringify(logfmt.parse(line.trim())))
+  }
 }
 
 process.stdin.on('data', function(chunk) {
