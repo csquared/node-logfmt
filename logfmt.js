@@ -39,3 +39,5 @@ exports.log = function(data, sink) {
   //trim traling space and print w. newline
   sink.write(line.substring(0,line.length-1) + "\n");
 }
+
+exports.extension = require('./build/Release/logfmt-extension');

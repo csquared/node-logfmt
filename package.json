@@ -5,11 +5,13 @@
   "main": "logfmt.js",
   "scripts": {
     "test": "./test/test"
+    "install": "node-gyp rebuild"
   },
   "bin": { "logfmt": "./bin/logfmt" },
   "devDependencies" : {
     "express" : "3.*",
     "mocha" : "*"
+    "node-gyp": "0.8.x"
   },
   "repository": {
     "type": "git",
