@@ -19,7 +19,8 @@ Handle<Value> logfmt_parse( const Arguments& args ) {
   string current_key;
   string current_value;
 
-  for(int i = 0; i < line.length(); i++){
+  unsigned long i;
+  for(i = 0; i < line.length(); i++){
     if(line[i] == '=') {
       in_key = false;
       in_value = true;
