@@ -15,6 +15,7 @@ Handle<Value> logfmt_parse( const Arguments& args ) {
   bool in_key = true;
   bool in_value = false;
   bool in_quote = false;
+  bool is_number = true;
   string current_key;
   string current_value;
 
@@ -30,6 +31,8 @@ Handle<Value> logfmt_parse( const Arguments& args ) {
 
       if(current_value.length() == 0){
         result->Set( String::New( current_key.c_str() ), Boolean::New(true) );
+      }else if(is_number){
+        result->Set( String::New( current_key.c_str() ), Number::New(atoi(current_value.c_str())) );
       }else{
         result->Set( String::New( current_key.c_str() ), String::New(current_value.c_str()) );
       }
@@ -38,9 +41,11 @@ Handle<Value> logfmt_parse( const Arguments& args ) {
       current_value = "";
       in_key = true;
       in_value = false;
+      is_number = true;
     }else if(in_key){
       current_key.push_back(line[i]);
     }else if(in_value){
+      if(line[i] > 65) is_number = false;
       current_value.push_back(line[i]);
     }
   }
@@ -53,7 +58,6 @@ Handle<Value> logfmt_parse( const Arguments& args ) {
       result->Set( String::New( current_key.c_str() ), String::New(current_value.c_str()) );
     }
   }
-
 
   return scope.Close( result );
 }

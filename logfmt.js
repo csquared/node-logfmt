@@ -45,8 +45,5 @@ var extension = require('./build/Release/logfmt-extension')
 
 exports.parse2 = function(line) {
   var res = extension.parse(line);
-  for(key in res){
-    if(/^\d+$/.test(res[key])) res[key] = parseInt(res[key  ]);
-  }
   return res;
 }

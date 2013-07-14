@@ -16,7 +16,7 @@ if(argv[0] == '-r'){
 } else {
   //convert logfmt logs to json
   println = function(line) {
-    console.log(JSON.stringify(logfmt.parse(line.trim())))
+    console.log(JSON.stringify(logfmt.parse2(line.trim())))
   }
 }
 
