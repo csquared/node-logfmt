@@ -24,10 +24,10 @@ exports.parse = function(line) {
   return attrs;
 }
 
-exports.sink = process.stdout;
+exports.stream = process.stdout;
 
-exports.log = function(data, sink) {
-  if(sink == undefined) sink = exports.sink;
+exports.log = function(data, stream) {
+  if(stream == undefined) stream = exports.stream;
 
   var line = '';
   Object.keys(data).forEach(function(key){
@@ -37,5 +37,5 @@ exports.log = function(data, sink) {
   })
 
   //trim traling space and print w. newline
-  sink.write(line.substring(0,line.length-1) + "\n");
+  stream.write(line.substring(0,line.length-1) + "\n");
 }

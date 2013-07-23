@@ -31,10 +31,10 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'}, process.stderr)
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
-Overwrite the default location by setting `.sink`
+Overwrite the default location by setting `.stream`
 ```javascript
 var logfmt = require('logfmt');
-logfmt.sink = process.stderr
+logfmt.stream = process.stderr
 
 logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
