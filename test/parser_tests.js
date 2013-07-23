@@ -1,6 +1,21 @@
 var logfmt = require('../logfmt'),
     assert = require('assert');
 
+test("simple flag parses", function(){
+  assert.deepEqual({'hello':true}, logfmt.parse('hello'));
+})
+
+test("simple key/value parses", function(){
+  assert.deepEqual({'hello':'kitty'}, logfmt.parse('hello=kitty'));
+})
+
+test("simple boolean parses", function(){
+  assert.deepEqual({'foo':true, 'bar':false}, logfmt.parse('foo=true bar=false'));
+})
+
+test("simple number parses", function(){
+  assert.deepEqual({'foo':123, 'bar':456.789}, logfmt.parse('foo=123 bar=456.789'));
+})
 
 test("readme string parses", function(){
   var test_string = "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf ";
@@ -15,3 +30,8 @@ test("readme string parses", function(){
   assert.equal(true, result['%^asdf'])
   assert.equal('/hello/user@foo.com/close', result['path'])
 })
+
+/*
+test("string with escaped quotes parses", function(){
+})
+*/
