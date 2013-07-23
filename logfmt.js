@@ -15,3 +15,23 @@ exports.log = function(data, stream) {
   //trim traling space and print w. newline
   stream.write(line.substring(0,line.length-1) + "\n");
 }
+
+try {
+  //this will fail if express is not on the require path
+  var body_parser = require('./lib/body_parser')
+
+  var logplex = function (body) {
+    var lines = []
+    body.split("\n").forEach(function(line){
+      lines.push(logfmt.parse(line))
+    })
+    return lines;
+  }
+
+  exports.bodyParser = function() {
+    return body_parser({content_type: "application/logplex-1", parser: logplex})
+  }
+}
+catch(e){
+  //no express defined
+}
