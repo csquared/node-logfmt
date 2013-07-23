@@ -1,4 +1,6 @@
-exports.parse  = require('./lib/logfmt_parser').parse;
+var parse = require('./lib/logfmt_parser').parse;
+
+exports.parse = parse;
 
 exports.stream = process.stdout;
 
@@ -23,7 +25,7 @@ try {
   var logplex = function (body) {
     var lines = []
     body.split("\n").forEach(function(line){
-      lines.push(logfmt.parse(line))
+      lines.push(parse(line))
     })
     return lines;
   }
