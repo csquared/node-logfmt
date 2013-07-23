@@ -57,9 +57,9 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 Requires `express` to be installed
 
 ```javascript
-var logfmt   = require('logfmt-body-parser');
+var logfmt   = require('logfmt');
 
-app.use(logfmt());
+app.use(logfmt.bodyParser());
 
 // req.body is now an array of objects
 app.post('/logs', function(req, res){
