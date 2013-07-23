@@ -29,8 +29,8 @@ test("quotes strings with spaces in them", function(){
 test("setting sink at object level", function(){
   var data = {foo: "hello kitty"}
   var sink = logfmt.sink;
-  logfmt.sink = mock_sink;
+  logfmt.stream = mock_sink;
   logfmt.log(data);
   assert.equal("foo=\"hello kitty\"\n", mock_sink.logline)
-  logfmt.sink = sink;
+  logfmt.stream = sink;
 })
