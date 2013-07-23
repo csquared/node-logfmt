@@ -17,6 +17,11 @@ test("simple number parses", function(){
   assert.deepEqual({'foo':123, 'bar':456.789}, logfmt.parse('foo=123 bar=456.789'));
 })
 
+test("string with escapes", function(){
+  assert.deepEqual({'hello':"\'kitty\'"}, logfmt.parse('hello="\'kitty\'"'));
+  assert.deepEqual({'hello':"\'kitty\'"}, logfmt.parse('hello=\'kitty\''));
+})
+
 test("readme string parses", function(){
   var test_string = "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf ";
   test_string += "code=H12 path=/hello/user@foo.com/close";
@@ -31,7 +36,3 @@ test("readme string parses", function(){
   assert.equal('/hello/user@foo.com/close', result['path'])
 })
 
-/*
-test("string with escaped quotes parses", function(){
-})
-*/
