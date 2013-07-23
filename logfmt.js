@@ -1,4 +1,5 @@
-exports.parse = function(line) {
+//TODO: speed test
+exports.old_parse = function(line) {
 
   var pairs = line.match(/([a-zA-Z0-9\%\_\-\.\^]+)=?(([a-zA-Z0-9\.\-\_\.\/\@]+)|("([^\"]+)"))?/g)
   var attrs = {}
@@ -23,6 +24,8 @@ exports.parse = function(line) {
 
   return attrs;
 }
+
+exports.parse = require('./lib/logfmt_parser').parse;
 
 exports.stream = process.stdout;
 
