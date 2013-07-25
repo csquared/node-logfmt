@@ -7,6 +7,10 @@
     "test": "./test/test"
   },
   "bin": { "logfmt": "./bin/logfmt" },
+  "dependencies" : {
+    "split" : "*",
+    "through" : "*"
+  },
   "devDependencies" : {
     "express" : "3.*",
     "mocha" : "*"
