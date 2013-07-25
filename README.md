@@ -56,6 +56,27 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 
 Requires `express` to be installed
 
+#### Streaming
+
+```javascript
+var logfmt   = require('logfmt');
+
+app.use(logfmt.bodyParserStream());
+
+// req.body is now a Readable Stream
+app.post('/logs', function(req, res){
+  req.body.on('readable', function(){
+    var parsedLine = req.body.read();
+    if(parsedLine) console.log(parsedLine);
+    else res.send('OK');
+  })
+})
+
+app.listen(3000)
+```
+
+#### Non-Streaming
+
 ```javascript
 var logfmt   = require('logfmt');
 
