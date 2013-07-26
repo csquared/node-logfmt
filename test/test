@@ -1,5 +1,0 @@
-#! /usr/bin/env sh
-
-mocha
-test/test_express
-test/test_cmd_line
