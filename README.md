@@ -4,7 +4,6 @@
 
 This library is for both converting lines in logfmt format to objects and
 for logging objects to a stream in logfmt format.
-
 It provides a logfmt parser, a logging facility,
 and both streaming and non-streaming body parsers for express.
 
