@@ -9,7 +9,8 @@
   "bin": { "logfmt": "./bin/logfmt" },
   "dependencies" : {
     "split" : "*",
-    "through" : "*"
+    "through" : "*",
+    "readable-stream" : "*"
   },
   "devDependencies" : {
     "express" : "3.*",

@@ -1,3 +1,6 @@
+var split = require('split');
+var through = require('through');
+
 var parse = require('./lib/logfmt_parser').parse;
 
 exports.parse = parse;
@@ -18,22 +21,49 @@ exports.log = function(data, stream) {
   stream.write(line.substring(0,line.length-1) + "\n");
 }
 
-try {
-  //this will fail if express is not on the require path
-  var body_parser = require('./lib/body_parser')
 
-  var logplex = function (body) {
-    var lines = []
-    body.split("\n").forEach(function(line){
-      lines.push(parse(line))
-    })
-    return lines;
-  }
+//Syncronous Body Parser
+var bodyParser = require('./lib/body_parser')
 
-  exports.bodyParser = function() {
-    return body_parser({content_type: "application/logplex-1", parser: logplex})
+var logfmtBodyParser = function (body) {
+  var lines = []
+  body.split("\n").forEach(function(line){
+    lines.push(parse(line))
+  })
+  return lines;
+}
+
+exports.bodyParser = function() {
+  return bodyParser({content_type: "application/logplex-1", parser: logfmtBodyParser})
+}
+
+//Stream Body Parser
+var Readable = require('readable-stream').Readable;
+var bodyParserStream = function(options){
+  return function(req, res, next) {
+    //setup
+    if (req._body) return next();
+    var is_logplex = req.get('content-type') === "application/logplex-1";
+    if (!is_logplex) return next();
+    req._body = true;
+
+    //define Readable body Stream
+    req.body = new Readable({ objectMode: true });
+    req.body._read = function(n) {
+      req.body._paused = false;
+    };
+
+    function parseLine(line) {
+      if(line) {
+        var parsedLine = parse(line);
+        if(!req.body._paused) req.body._paused = !req.body.push(parsedLine);
+      }
+    }
+    function end() { req.body.push(null); }
+    req.pipe(split()).pipe(through(parseLine, end));
+
+    return next();
   }
 }
-catch(e){
-  //no express defined
-}
+
+exports.bodyParserStream = bodyParserStream;
