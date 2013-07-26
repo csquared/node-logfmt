@@ -159,6 +159,8 @@ curl -X POST --header 'Content-Type: application/logplex-1' -d "foo=bar a=14 baz
 
 ## command line
 
+### bin/logfmt
+
 accepts lines on STDIN and converts them to json
 
 
