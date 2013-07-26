@@ -54,7 +54,7 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 
 ## parser
 
-### `logfmt.parse()`
+### `logfmt.parse(string)`
 
 ```javascript
 var logfmt = require('logfmt');
