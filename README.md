@@ -2,9 +2,11 @@
 
 "logfmt" is the name for a [key value logging convention](https://github.com/kr/logfmt) we've adopted at Heroku.
 
-This library is for both logging object to logfmt format and converting
-lines in logfmt format to objects.  It provides a parser, a simple log
-method, and both streaming and non-streaming body parsers for express.
+This library is for both converting lines in logfmt format to objects and
+for logging objects to a stream in logfmt format.
+
+It provides a logfmt parser, a logging facility,
+and both streaming and non-streaming body parsers for express.
 
 You should use this library if you're trying to write structured logs or
 if you're consuming them (especially if you're writing a logplex drain).
