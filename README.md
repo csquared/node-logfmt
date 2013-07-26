@@ -21,6 +21,17 @@ if you're consuming them (especially if you're writing a logplex drain).
 var logfmt = require('logfmt');
 ```
 
+## parser
+
+### `logfmt.parse(string)`
+
+```javascript
+var logfmt = require('logfmt');
+
+logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12")
+//=>{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
+```
+
 ## logging
 
 ### `logfmt.log(object, [stream])`
@@ -49,18 +60,6 @@ logfmt.stream = process.stderr
 
 logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
-```
-
-
-## parser
-
-### `logfmt.parse(string)`
-
-```javascript
-var logfmt = require('logfmt');
-
-logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12")
-//=>{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
 ```
 
 ## express middleware
@@ -164,15 +163,15 @@ curl -X POST --header 'Content-Type: application/logplex-1' -d "foo=bar a=14 baz
 accepts lines on STDIN and converts them to json
 
 
-    echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt
+    > echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt
     { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
 
 ### logfmt -r (reverse)
 
 accepts JSON on STDIN and converts them to logfmt
 
-    echo '{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }' | logfmt -r
+    > echo '{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }' | logfmt -r
     foo=bar a=14 baz="hello kitty" cool%story=bro f=true %^asdf=true
 
-    echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt | logfmt -r | logfmt
+    > echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt | logfmt -r | logfmt
     { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
