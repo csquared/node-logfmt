@@ -33,18 +33,24 @@ var logfmtBodyParser = function (body) {
   return lines;
 }
 
-exports.bodyParser = function() {
-  return bodyParser({content_type: "application/logplex-1", parser: logfmtBodyParser})
+exports.bodyParser = function(options) {
+  if(options == null) options = {};
+  var mime = options.contentType || "application/logplex-1"
+  return bodyParser({contentType: mime, parser: logfmtBodyParser})
 }
 
 //Stream Body Parser
 var Readable = require('readable-stream').Readable;
 var bodyParserStream = function(options){
+  if(options == null) options = {};
+  var mime = options.contentType || "application/logplex-1";
+
   return function(req, res, next) {
     //setup
     if (req._body) return next();
-    var is_logplex = req.get('content-type') === "application/logplex-1";
-    if (!is_logplex) return next();
+    console.log(req.get('content-type'), mime);
+    var is_mime = req.get('content-type') === mime;
+    if (!is_mime) return next();
     req._body = true;
 
     //define Readable body Stream

@@ -1,5 +1,14 @@
 # node-logfmt
 
+"logfmt" is the name for a [key value logging convention](https://github.com/kr/logfmt) we've adopted at Heroku.
+
+This library is for both logging object to logfmt format and converting
+lines in logfmt format to objects.  It provides a parser, a simple log
+method, and both streaming and non-streaming body parsers for express.
+
+You should use this library if you're trying to write structured logs or
+if you're consuming them (especially if you're writing a logplex drain).
+
 ## install
 
     npm install logfmt
@@ -54,31 +63,17 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 
 ### express middleware
 
-Requires `express` to be installed
-
 #### Streaming
+
+##### `logfmt.bodyParserStream(opts)`
+
+    Valid Options:
+      contentType: defaults to 'application/logplex-1'
 
 If you use the `logfmt.bodyParserStream()` for a body parser,
 you will have a `req.body` that is a readable stream.
 
-```javascript
-var app    = require('express')();
-var http   = require('http');
-var logfmt  = require('logfmt');
-
-app.use(logfmt.bodyParserStream());
-
-// req.body is now a Readable Stream
-app.post('/logs', function(req, res){
-  req.body.on('readable', function(){
-    var parsedLine = req.body.read();
-    if(parsedLine) console.log(parsedLine);
-    else res.send('OK');
-  })
-})
-
-http.createServer(app).listen(3000);
-```
+Pipes FTW:
 
 ```javascript
 var app    = require('express')();
@@ -101,7 +96,33 @@ app.post('/logs', function(req, res){
 http.createServer(app).listen(3000);
 ```
 
+Or you can just use the `readable` event:
+
+```javascript
+var app    = require('express')();
+var http   = require('http');
+var logfmt  = require('logfmt');
+
+app.use(logfmt.bodyParserStream());
+
+// req.body is now a Readable Stream
+app.post('/logs', function(req, res){
+  req.body.on('readable', function(){
+    var parsedLine = req.body.read();
+    if(parsedLine) console.log(parsedLine);
+    else res.send('OK');
+  })
+})
+
+http.createServer(app).listen(3000);
+```
+
 #### Non-Streaming
+
+##### `logfmt.bodyParser(opts)`
+
+    Valid Options:
+      contentType: defaults to 'application/logplex-1'
 
 If you use the `logfmt.bodyParser()` for a body parser,
 you will have a `req.body` that is an array of objects.
