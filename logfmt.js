@@ -48,7 +48,6 @@ var bodyParserStream = function(options){
   return function(req, res, next) {
     //setup
     if (req._body) return next();
-    console.log(req.get('content-type'), mime);
     var is_mime = req.get('content-type') === mime;
     if (!is_mime) return next();
     req._body = true;
