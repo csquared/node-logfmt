@@ -71,7 +71,7 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 
 Valid Options:
 
-- `contentType`: defaults to 'application/logplex-1'
+- `contentType`: defaults to `application/logplex-1`
 
 If you use the `logfmt.bodyParserStream()` for a body parser,
 you will have a `req.body` that is a readable stream.
@@ -126,7 +126,7 @@ http.createServer(app).listen(3000);
 
 Valid Options:
 
-- `contentType`: defaults to 'application/logplex-1'
+- `contentType`: defaults to `application/logplex-1`
 
 If you use the `logfmt.bodyParser()` for a body parser,
 you will have a `req.body` that is an array of objects.
