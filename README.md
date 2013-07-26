@@ -67,10 +67,11 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 
 #### Streaming
 
-##### `logfmt.bodyParserStream(opts)`
+##### `logfmt.bodyParserStream([opts])`
 
-    Valid Options:
-      contentType: defaults to 'application/logplex-1'
+Valid Options:
+
+- `contentType`: defaults to 'application/logplex-1'
 
 If you use the `logfmt.bodyParserStream()` for a body parser,
 you will have a `req.body` that is a readable stream.
