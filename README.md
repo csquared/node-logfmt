@@ -58,8 +58,13 @@ Requires `express` to be installed
 
 #### Streaming
 
+If you use the `logfmt.bodyParserStream()` for a body parser,
+you will have a `req.body` that is a readable stream.
+
 ```javascript
-var logfmt   = require('logfmt');
+var app    = require('express')();
+var http   = require('http');
+var logfmt  = require('logfmt');
 
 app.use(logfmt.bodyParserStream());
 
@@ -72,10 +77,34 @@ app.post('/logs', function(req, res){
   })
 })
 
-app.listen(3000)
+http.createServer(app).listen(3000);
+```
+
+```javascript
+var app    = require('express')();
+var http   = require('http');
+var through = require('through');
+var logfmt  = require('logfmt');
+
+app.use(logfmt.bodyParserStream());
+
+app.post('/logs', function(req, res){
+  if(!req.body) return res.send('OK');
+
+  req.body.pipe(through(function(line){
+    console.dir(line);
+  }))
+
+  res.send('OK');
+})
+
+http.createServer(app).listen(3000);
 ```
 
 #### Non-Streaming
+
+If you use the `logfmt.bodyParser()` for a body parser,
+you will have a `req.body` that is an array of objects.
 
 ```javascript
 var logfmt   = require('logfmt');
@@ -94,7 +123,7 @@ app.post('/logs', function(req, res){
   res.send('OK');
 })
 
-app.listen(3000)
+http.createServer(app).listen(3000);
 ```
 
 test it:
