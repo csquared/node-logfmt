@@ -40,27 +40,26 @@ exports.bodyParser = function() {
 //Stream Body Parser
 var Readable = require('readable-stream').Readable;
 var bodyParserStream = function(options){
-
   return function(req, res, next) {
+    //setup
     if (req._body) return next();
     var is_logplex = req.get('content-type') === "application/logplex-1";
     if (!is_logplex) return next();
     req._body = true;
-    if(!req.body){
-      req.body = new Readable({ objectMode: true });
-      req.body._read = function(n) {
-        req.body._paused = false;
-      };
-    }
+
+    //define Readable body Stream
+    req.body = new Readable({ objectMode: true });
+    req.body._read = function(n) {
+      req.body._paused = false;
+    };
 
     function parseLine(line) {
-      console.log('line :' + line);
       if(line) {
         var parsedLine = parse(line);
         if(!req.body._paused) req.body._paused = !req.body.push(parsedLine);
       }
     }
-    function end() { console.log('END'); req.body.push(null); }
+    function end() { req.body.push(null); }
     req.pipe(split()).pipe(through(parseLine, end));
 
     return next();
