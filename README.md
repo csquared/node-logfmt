@@ -63,11 +63,11 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 //=>{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
 ```
 
-### express middleware
+## express middleware
 
-#### Streaming
+### Streaming
 
-##### `logfmt.bodyParserStream([opts])`
+#### `logfmt.bodyParserStream([opts])`
 
 Valid Options:
 
@@ -120,9 +120,9 @@ app.post('/logs', function(req, res){
 http.createServer(app).listen(3000);
 ```
 
-#### Non-Streaming
+### Non-Streaming
 
-##### `logfmt.bodyParser(opts)`
+#### `logfmt.bodyParser(opts)`
 
     Valid Options:
       contentType: defaults to 'application/logplex-1'
@@ -156,7 +156,7 @@ test it:
 curl -X POST --header 'Content-Type: application/logplex-1' -d "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" http://localhost:3000/logs
 ```
 
-### command line
+## command line
 
 accepts lines on STDIN and converts them to json
 
@@ -164,7 +164,7 @@ accepts lines on STDIN and converts them to json
     echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt
     { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
 
-#### reverse
+### reverse
 
 accepts JSON on STDIN and converts them to logfmt
 
