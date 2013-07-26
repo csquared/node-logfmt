@@ -124,8 +124,9 @@ http.createServer(app).listen(3000);
 
 #### `logfmt.bodyParser([opts])`
 
-    Valid Options:
-      contentType: defaults to 'application/logplex-1'
+Valid Options:
+
+- `contentType`: defaults to 'application/logplex-1'
 
 If you use the `logfmt.bodyParser()` for a body parser,
 you will have a `req.body` that is an array of objects.
