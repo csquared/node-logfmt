@@ -23,7 +23,7 @@ var logfmt = require('logfmt');
 
 ## logging
 
-### `logfmt.log()`
+### `logfmt.log(object, [stream])`
 
 Defaults to logging to `process.stdout`
 
