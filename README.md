@@ -165,7 +165,7 @@ accepts lines on STDIN and converts them to json
     echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt
     { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
 
-### reverse
+### -r (reverse)
 
 accepts JSON on STDIN and converts them to logfmt
 
