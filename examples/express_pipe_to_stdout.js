@@ -10,7 +10,7 @@ app.post('/logs', function(req, res){
   if(!req.body) return res.send('OK');
 
   req.body.pipe(through(function(line){
-    console.dir(line);
+    console.log(JSON.stringify(line));
   }))
 
   res.send('OK');
