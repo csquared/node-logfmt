@@ -122,7 +122,7 @@ http.createServer(app).listen(3000);
 
 ### Non-Streaming
 
-#### `logfmt.bodyParser(opts)`
+#### `logfmt.bodyParser([opts])`
 
     Valid Options:
       contentType: defaults to 'application/logplex-1'
