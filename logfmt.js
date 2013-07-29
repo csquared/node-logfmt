@@ -34,3 +34,16 @@ exports.bodyParserStream = function(options) {
   var mime = options.contentType || "application/logplex-1"
   return bodyParserStream({contentType: mime, parser: logfmtBodyParser})
 }
+
+exports.time = function(timed_func) {
+  var startTime = (new Date()).getTime();
+  var our_callback = function(label, data){
+    if(!data) data = {};
+    if(!label) label = 'elapsed';
+    var now = (new Date()).getTime()
+    data[label] = now - startTime;
+    exports.log(data);
+  }
+
+  return timed_func(our_callback);
+}
