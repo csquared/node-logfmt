@@ -43,6 +43,52 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
+### `logfmt.time(callback([label], [data]))`
+
+Log how long something takes.
+
+    - `label`: optional name for the milliseconds key (defaults to `elapsed`)
+    - `data`: other data you'd like to log with the time elapsed
+
+No args defaults to `elapsed=<milliseconds>`
+
+```javascript
+var logfmt = require('logfmt');
+logfmt.time(function(callback){
+  callback();
+})
+//=> elasped=1
+```
+
+String arg changes the key `<string>=<milliseconds>`
+
+```javascript
+var logfmt = require('logfmt');
+logfmt.time(function(callback){
+  callback('time');
+})
+//=> time=1
+```
+
+Object arg includes your data with the default `elapsed` label
+
+```javascript
+var logfmt = require('logfmt');
+logfmt.time(function(callback){
+  callback({foo: 'bar'});
+})
+//=> foo=bar elapsed=1
+```
+String arg and Object arg includes your data and overwrites the default label
+
+```javascript
+var logfmt = require('logfmt');
+logfmt.time(function(callback){
+  callback('time', {foo: 'bar'});
+})
+//=> foo=bar time=1
+```
+
 ### customizing logging location
 
 `log()` Accepts as 2nd arg anything that responds to `write(string)`
