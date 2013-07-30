@@ -53,20 +53,18 @@ Log how long something takes.
 - `data`: optional extra data to include with every call to `logger.log`
 - `logger`: object passed to callback with a `log` function
 
-No args defaults to `elapsed=<milliseconds>`
+No args defaults to `elapsed=<milliseconds>ms`
 
 ```javascript
-var logfmt = require('logfmt');
 logfmt.time(function(logger){
   logger.log();
 })
 //=> elapsed=1ms
 ```
 
-String arg changes the key `<string>=<milliseconds>ms`
+String `label` changes the key `<string>=<milliseconds>ms`
 
 ```javascript
-var logfmt = require('logfmt');
 logfmt.time('time', function(logger){
   logger.log();
   logger.log();
@@ -75,39 +73,30 @@ logfmt.time('time', function(logger){
 //=> time=2ms
 ```
 
-No `label` and data passed in to inner logging function.
+Data can be passed to `logger.log`
 
 ```javascript
-var logfmt = require('logfmt');
 logfmt.time(function(logger){
   logger.log({foo: 'bar'});
 })
 //=> foo=bar elapsed=1ms
 ```
-With `label` and data passed to inner logging function.
+
+Data can also be passed to `logfmt.time` and will persist
+across calls to `logger.log`
 
 ```javascript
-var logfmt = require('logfmt');
-logfmt.time('thing', function(logger){
-  logger.log({foo: 'bar'});
-})
-//=> foo=bar thing=1ms
-```
-
-With `label` and data passed to `logfmt.time`
-
-```javascript
-var logfmt = require('logfmt');
 logfmt.time('thing', {foo: 'bar'}, function(logger){
-  logger.log({at: 'function'});
+  logger.log({at: 'function.start'});
+  logger.log({at: 'function.end'});
 })
-//=> at=function foo=bar thing=1ms
+//=> at=function.start foo=bar thing=1ms
+//=> at=function.end foo=bar thing=2ms
 ```
 
-No `label` and data passed to `logfmt.time`
+You do not need a `label` to pass data to `logfmt.time`
 
 ```javascript
-var logfmt = require('logfmt');
 logfmt.time({foo: 'bar'}, function(logger){
   logger.log({at: 'function'});
 })
