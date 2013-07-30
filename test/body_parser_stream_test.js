@@ -83,7 +83,7 @@ suite('logfmt.bodyParserStream', function() {
     })
   })
 
-  test("body parser parses all the lines", function(done){
+  test("parses all the lines", function(done){
     var mockReq = new stream.Readable;
     mockReq.header = function(){
       return 'application/logplex-1';
@@ -91,7 +91,7 @@ suite('logfmt.bodyParserStream', function() {
     mockReq._read = function(){};
     mockReq.push('hello=kitty\n');
     mockReq.push('foo=bar\n');
-    mockReq.push('path=/');
+    mockReq.push('path=/\n');
     mockReq.push(null);
     var next = function(){};
 
