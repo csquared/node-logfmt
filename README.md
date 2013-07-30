@@ -105,14 +105,14 @@ logfmt.time({foo: 'bar'}, function(logger){
 
 ### customizing logging location
 
-`log()` Accepts as 2nd arg anything that responds to `write(string)`
+`logfmt.log()` and `logger.log()` Accepts as 2nd argument anything that responds to `write(string)`
 ```javascript
 var logfmt = require('logfmt');
 logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'}, process.stderr)
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
-Overwrite the default location by setting `.stream`
+Overwrite the default global location by setting `logfmt.stream`
 ```javascript
 var logfmt = require('logfmt');
 logfmt.stream = process.stderr

@@ -8,8 +8,9 @@ var mock_sink = {
   }
 }
 
+logfmt.stream = mock_sink;
+
 test("logs the time", function(done){
-  logfmt.stream = mock_sink;
   logfmt.time(function(logger){
     logger.log();
     var actual = mock_sink.logline;
@@ -19,7 +20,6 @@ test("logs the time", function(done){
 })
 
 test("logs the time with your label", function(done){
-  logfmt.stream = mock_sink;
   logfmt.time('time', function(logger){
     logger.log();
     var actual = mock_sink.logline;
@@ -29,7 +29,6 @@ test("logs the time with your label", function(done){
 })
 
 test("logs the time with your label and persistent data", function(done){
-  logfmt.stream = mock_sink;
   logfmt.time('time', {foo: 'bar'}, function(logger){
     logger.log();
     var actual = mock_sink.logline;
@@ -39,7 +38,6 @@ test("logs the time with your label and persistent data", function(done){
 })
 
 test("logs the time with persistent data", function(done){
-  logfmt.stream = mock_sink;
   logfmt.time({foo: 'bar'}, function(logger){
     logger.log();
     var actual = mock_sink.logline;
@@ -54,7 +52,6 @@ test("logs the time with persistent data", function(done){
 //now we're using setTimeout to ensure the elapsed
 //time reflects a known delay
 test("accurancy in milliseconds", function(done){
-  logfmt.stream = mock_sink;
   logfmt.time(function(logger){
     var wrapped = function() {
       logger.log();
@@ -67,7 +64,6 @@ test("accurancy in milliseconds", function(done){
 })
 
 test("logs the time with your label and data", function(done){
-  logfmt.stream = mock_sink;
   logfmt.time('time', function(logger){
     logger.log({foo: 'bar'});
     var actual = mock_sink.logline;
