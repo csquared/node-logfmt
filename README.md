@@ -62,7 +62,7 @@ logfmt.time(function(logger){
 //=> elapsed=1
 ```
 
-String arg changes the key `<string>=<milliseconds>`
+String arg changes the key `<string>=<milliseconds>ms`
 
 ```javascript
 var logfmt = require('logfmt');
@@ -88,7 +88,7 @@ String arg and Object arg includes your data and overwrites the default label
 ```javascript
 var logfmt = require('logfmt');
 logfmt.time('thing', function(logger){
-  logger.log('thing', {foo: 'bar'});
+  logger.log({foo: 'bar'});
 })
 //=> foo=bar thing=1
 ```
