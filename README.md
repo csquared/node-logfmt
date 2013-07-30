@@ -54,18 +54,18 @@ No args defaults to `elapsed=<milliseconds>`
 
 ```javascript
 var logfmt = require('logfmt');
-logfmt.time(function(callback){
-  callback();
+logfmt.time(function(done){
+  done();
 })
-//=> elasped=1
+//=> elapsed=1
 ```
 
 String arg changes the key `<string>=<milliseconds>`
 
 ```javascript
 var logfmt = require('logfmt');
-logfmt.time(function(callback){
-  callback('time');
+logfmt.time(function(done){
+  done('time');
 })
 //=> time=1
 ```
@@ -74,8 +74,8 @@ Object arg includes your data with the default `elapsed` label
 
 ```javascript
 var logfmt = require('logfmt');
-logfmt.time(function(callback){
-  callback({foo: 'bar'});
+logfmt.time(function(done){
+  done({foo: 'bar'});
 })
 //=> foo=bar elapsed=1
 ```
@@ -83,8 +83,8 @@ String arg and Object arg includes your data and overwrites the default label
 
 ```javascript
 var logfmt = require('logfmt');
-logfmt.time(function(callback){
-  callback('time', {foo: 'bar'});
+logfmt.time(function(done){
+  done('time', {foo: 'bar'});
 })
 //=> foo=bar time=1
 ```
