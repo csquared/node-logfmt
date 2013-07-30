@@ -43,19 +43,21 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
-### `logfmt.time(callback([label], [data]))`
+### `logfmt.time([label], callback(logger))`
+
+#### `logger.log([data], [stream])`
 
 Log how long something takes.
 
 - `label`: optional name for the milliseconds key (defaults to `elapsed`)
-- `data`: other data you'd like to log with the time elapsed
+- `logger`: object passed to callback with a `log` function
 
 No args defaults to `elapsed=<milliseconds>`
 
 ```javascript
 var logfmt = require('logfmt');
-logfmt.time(function(done){
-  done();
+logfmt.time(function(logger){
+  logger.log();
 })
 //=> elapsed=1
 ```
@@ -64,18 +66,20 @@ String arg changes the key `<string>=<milliseconds>`
 
 ```javascript
 var logfmt = require('logfmt');
-logfmt.time(function(done){
-  done('time');
+logfmt.time('time', function(logger){
+  logger.log();
+  logger.log();
 })
 //=> time=1
+//=> time=2
 ```
 
 Object arg includes your data with the default `elapsed` label
 
 ```javascript
 var logfmt = require('logfmt');
-logfmt.time(function(done){
-  done({foo: 'bar'});
+logfmt.time(function(logger){
+  logger.log({foo: 'bar'});
 })
 //=> foo=bar elapsed=1
 ```
@@ -83,10 +87,10 @@ String arg and Object arg includes your data and overwrites the default label
 
 ```javascript
 var logfmt = require('logfmt');
-logfmt.time(function(done){
-  done('time', {foo: 'bar'});
+logfmt.time('thing', function(logger){
+  logger.log('thing', {foo: 'bar'});
 })
-//=> foo=bar time=1
+//=> foo=bar thing=1
 ```
 
 ### customizing logging location
