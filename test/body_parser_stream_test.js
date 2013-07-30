@@ -5,7 +5,7 @@ var logfmt = require('../logfmt'),
 test("stream body parser skips parsing when req._body is true", function(){
 
   var mockReq = new stream.Readable;
-  mockReq.get = function(){
+  mockReq.header = function(){
     return 'application/logplex-1';
   }
   mockReq._read = function(){};
@@ -24,7 +24,7 @@ test("stream body parser skips parsing when req._body is true", function(){
 
 test("stream body parser skips parsing when contentType does not match", function(){
   var mockReq = new stream.Readable;
-  mockReq.get = function(){
+  mockReq.header = function(){
     return 'application/foo';
   }
   mockReq._read = function(){};
@@ -42,7 +42,7 @@ test("stream body parser skips parsing when contentType does not match", functio
 
 test("stream body parser converts body lines to object read stream", function(done){
   var mockReq = new stream.Readable;
-  mockReq.get = function(){
+  mockReq.header = function(){
     return 'application/logplex-1';
   }
   mockReq._read = function(){};
@@ -63,7 +63,7 @@ test("stream body parser converts body lines to object read stream", function(do
 
 test("stream body parser accepts contentType option", function(done){
   var mockReq = new stream.Readable;
-  mockReq.get = function(){
+  mockReq.header = function(){
     return 'foo';
   }
   mockReq._read = function(){};
@@ -83,7 +83,7 @@ test("stream body parser accepts contentType option", function(done){
 
 test("body parser parses all the lines", function(done){
   var mockReq = new stream.Readable;
-  mockReq.get = function(){
+  mockReq.header = function(){
     return 'application/logplex-1';
   }
   mockReq._read = function(){};

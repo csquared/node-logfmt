@@ -14,7 +14,8 @@
   },
   "devDependencies" : {
     "express" : "3.*",
-    "mocha" : "*"
+    "mocha" : "*",
+    "restify" : "*"
   },
   "repository": {
     "type": "git",
