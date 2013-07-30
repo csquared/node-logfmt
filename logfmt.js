@@ -9,27 +9,16 @@ exports.time = logger.time;
 
 //Syncronous Body Parser
 var bodyParser = require('./lib/body_parser')
-
-var logfmtBodyParser = function (body) {
-  var lines = []
-  body.split("\n").forEach(function(line){
-    lines.push(parse(line))
-  })
-  return lines;
-}
-
 exports.bodyParser = function(options) {
   if(options == null) options = {};
   var mime = options.contentType || "application/logplex-1"
-  return bodyParser({contentType: mime, parser: logfmtBodyParser})
+  return bodyParser({contentType: mime, parser: parse})
 }
 
 //Stream Body Parser
 var bodyParserStream = require('./lib/body_parser_stream');
-
 exports.bodyParserStream = function(options) {
   if(options == null) options = {};
   var mime = options.contentType || "application/logplex-1"
   return bodyParserStream({contentType: mime, parser: parse})
 }
-
