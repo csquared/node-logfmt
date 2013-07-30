@@ -43,16 +43,76 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
+### `logfmt.time([label], [data], callback(logger))`
+
+#### `logger.log([data], [stream])`
+
+Log how long something takes.
+
+- `label`: optional name for the milliseconds key (defaults to `elapsed`)
+- `data`: optional extra data to include with every call to `logger.log`
+- `logger`: object passed to callback with a `log` function
+
+No args defaults to `elapsed=<milliseconds>ms`
+
+```javascript
+logfmt.time(function(logger){
+  logger.log();
+})
+//=> elapsed=1ms
+```
+
+String `label` changes the key `<string>=<milliseconds>ms`
+
+```javascript
+logfmt.time('time', function(logger){
+  logger.log();
+  logger.log();
+})
+//=> time=1ms
+//=> time=2ms
+```
+
+Data can be passed to `logger.log`
+
+```javascript
+logfmt.time(function(logger){
+  logger.log({foo: 'bar'});
+})
+//=> foo=bar elapsed=1ms
+```
+
+Data can also be passed to `logfmt.time` and will persist
+across calls to `logger.log`
+
+```javascript
+logfmt.time('thing', {foo: 'bar'}, function(logger){
+  logger.log({at: 'function.start'});
+  logger.log({at: 'function.end'});
+})
+//=> at=function.start foo=bar thing=1ms
+//=> at=function.end foo=bar thing=2ms
+```
+
+You do not need a `label` to pass data to `logfmt.time`
+
+```javascript
+logfmt.time({foo: 'bar'}, function(logger){
+  logger.log({at: 'function'});
+})
+//=> at=function foo=bar elapsed=1ms
+```
+
 ### customizing logging location
 
-`log()` Accepts as 2nd arg anything that responds to `write(string)`
+`logfmt.log()` and `logger.log()` Accepts as 2nd argument anything that responds to `write(string)`
 ```javascript
 var logfmt = require('logfmt');
 logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'}, process.stderr)
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
-Overwrite the default location by setting `.stream`
+Overwrite the default global location by setting `logfmt.stream`
 ```javascript
 var logfmt = require('logfmt');
 logfmt.stream = process.stderr
