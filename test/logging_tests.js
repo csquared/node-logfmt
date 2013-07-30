@@ -35,6 +35,18 @@ test("setting sink at object level", function(){
   logfmt.stream = sink;
 })
 
+test(".time logs milliseconds", function(done){
+  logfmt.stream = mock_sink;
+  logfmt.time(function(callback){
+    var wrapped = function() {
+      callback();
+      assert(/^elapsed=2\d\n$/.test(mock_sink.logline))
+      done();
+    }
+    setTimeout(wrapped, 20);
+  })
+})
+
 test(".time logs the time", function(done){
   logfmt.stream = mock_sink;
   logfmt.time(function(callback){
