@@ -28,7 +28,32 @@ test("logs the time with your label", function(done){
   })
 })
 
-test("milliseconds", function(done){
+test("logs the time with your label and persistent data", function(done){
+  logfmt.stream = mock_sink;
+  logfmt.time('time', {foo: 'bar'}, function(logger){
+    logger.log();
+    var actual = mock_sink.logline;
+    assert(/^foo=bar time=\dms\n$/.test(actual), actual)
+    done();
+  })
+})
+
+test("logs the time with persistent data", function(done){
+  logfmt.stream = mock_sink;
+  logfmt.time({foo: 'bar'}, function(logger){
+    logger.log();
+    var actual = mock_sink.logline;
+    assert(/^foo=bar elapsed=\dms\n$/.test(actual), actual)
+    logger.log({moar: 'data'});
+    var actual = mock_sink.logline;
+    assert(/^moar=data foo=bar elapsed=\dms\n$/.test(actual), actual)
+    done();
+  })
+})
+
+//now we're using setTimeout to ensure the elapsed
+//time reflects a known delay
+test("accurancy in milliseconds", function(done){
   logfmt.stream = mock_sink;
   logfmt.time(function(logger){
     var wrapped = function() {
@@ -60,6 +85,9 @@ test("supports log(data, stream) interface", function(done){
   })
 })
 
+// tests you can pass the logger into a closure
+// and call `log` multiple times.
+// uses setTimeout to ensure the timing happens in 20ms
 test("can log twice", function(done){
   logfmt.time(function(logger){
     logger.log({foo: 'bar'}, mock_sink);
