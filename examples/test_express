@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 app = require('./express_buffered');
+var http = require('http');
 
 var options = {
   hostname: 'localhost',
