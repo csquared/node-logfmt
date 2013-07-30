@@ -47,8 +47,8 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 
 Log how long something takes.
 
-    - `label`: optional name for the milliseconds key (defaults to `elapsed`)
-    - `data`: other data you'd like to log with the time elapsed
+- `label`: optional name for the milliseconds key (defaults to `elapsed`)
+- `data`: other data you'd like to log with the time elapsed
 
 No args defaults to `elapsed=<milliseconds>`
 
