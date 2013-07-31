@@ -1,21 +1,23 @@
 {
   "name": "logfmt",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Key-Value log line parser",
   "main": "logfmt.js",
   "scripts": {
     "test": "./test/test"
   },
-  "bin": { "logfmt": "./bin/logfmt" },
-  "dependencies" : {
-    "split" : "*",
-    "through" : "*",
-    "readable-stream" : "*"
+  "bin": {
+    "logfmt": "./bin/logfmt"
   },
-  "devDependencies" : {
-    "express" : "3.*",
-    "mocha" : "*",
-    "restify" : "*"
+  "dependencies": {
+    "split": "*",
+    "through": "*",
+    "readable-stream": "*"
+  },
+  "devDependencies": {
+    "express": "3.*",
+    "mocha": "*",
+    "restify": "*"
   },
   "repository": {
     "type": "git",
