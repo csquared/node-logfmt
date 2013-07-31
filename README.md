@@ -28,8 +28,11 @@ var logfmt = require('logfmt');
 var logfmt = require('logfmt');
 
 logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12")
-//=>{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
+//=>{ "foo": "bar", "a": '14', "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
 ```
+
+The only conversions are from the strings `true` and `false` to their proper boolean counterparts.
+We cannot arbitrarily convert numbers because we will drop precision for numbers that require more than 32 bits to represent them.
 
 ## logging
 
