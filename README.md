@@ -121,7 +121,14 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
-## express middleware
+## express/restify middleware
+
+```javascript
+  // streaming
+  app.use(logfmt.bodyParserStream());
+  // buffering
+  app.use(logfmt.bodyParser());
+```
 
 ### Streaming
 
