@@ -6,6 +6,19 @@ var logfmt   = require('../logfmt');
 
 app.use(logfmt.bodyParser());
 
+app.use(function(req,res,next){
+  logfmt.time(function(logger){
+    var request_data = {
+      "method" : req.method,
+      "content-type" : req.headers['content-type'],
+      "status" : res.statusCode
+    }
+
+    next();
+    logger.log(request_data);
+  })
+})
+
 app.post('/logs', function(req, res){
   console.log('HEADERS: ' + JSON.stringify(req.headers));
   console.log('BODY: ' + JSON.stringify(req.body));
