@@ -27,16 +27,22 @@ suite('logfmt.log', function() {
     assert.equal("foo=\"hello kitty\"\n", mock_sink.logline)
   })
 
-  test("undefined is an empty string", function(){
-    var data = {foo: undefined}
+  test("escapes quotes within strings with spaces in them", function(){
+    var data = {foo: 'hello my "friend"'}
     logfmt.log(data, mock_sink);
-    assert.equal("foo=\"\"\n", mock_sink.logline)
+    assert.equal('foo="hello my \\"friend\\""\n', mock_sink.logline)
   })
 
-  test("null is an empty string", function(){
+  test("undefined is logged as nothing", function(){
+    var data = {foo: undefined}
+    logfmt.log(data, mock_sink);
+    assert.equal("foo=\n", mock_sink.logline)
+  })
+
+  test("null is logged as nothing", function(){
     var data = {foo: null}
     logfmt.log(data, mock_sink);
-    assert.equal("foo=\"\"\n", mock_sink.logline)
+    assert.equal("foo=\n", mock_sink.logline)
   })
 
   test("setting sink at object level", function(){
