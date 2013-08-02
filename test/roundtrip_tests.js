@@ -31,6 +31,9 @@ suite('logfmt.parse(logfmt.log)', function(){
     var data = {foo: 'hello my "friend"'}
     logfmt.log(data, mock_sink);
     assert.deepEqual(data, logfmt.parse(mock_sink.logline))
+    data = {foo: 'hello my "friend" whom I "love"'}
+    logfmt.log(data, mock_sink);
+    assert.deepEqual(data, logfmt.parse(mock_sink.logline))
   })
 
   test("null comes back as null", function(){

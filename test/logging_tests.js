@@ -31,6 +31,9 @@ suite('logfmt.log', function() {
     var data = {foo: 'hello my "friend"'}
     logfmt.log(data, mock_sink);
     assert.equal('foo="hello my \\"friend\\""\n', mock_sink.logline)
+    var data = {foo: 'hello my "friend" whom I "love"'}
+    logfmt.log(data, mock_sink);
+    assert.equal('foo="hello my \\"friend\\" whom I \\"love\\""\n', mock_sink.logline)
   })
 
   test("undefined is logged as nothing", function(){
