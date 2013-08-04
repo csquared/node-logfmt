@@ -124,27 +124,6 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
-## express/restify logging middleware
-
-I can't predict all the things you'd like to log, nor all the names you'd like
-for the keys to be.  Fortunately, it couldn't be easier to roll your own:
-
-```javascript
-app.use(function(req,res,next){
-  logfmt.time(function(logger){
-    var request_data = {
-      "method" : req.method,
-      "content-type" : req.headers['content-type'],
-      "status" : res.statusCode
-    }
-
-    next();
-    logger.log(request_data);
-  })
-})
-//=> method=POST content-type=application/logplex-1 status=200 elapsed=762ms
-```
-
 ## express/restify parsing middleware
 
 This we have handled.
