@@ -140,6 +140,8 @@ Valid Options:
 - `elapsed`: renames the `elapsed` key to a key of your choice when in
              non-immediate mode
 
+Defaults to `immediate: true` and `elapsed: 'elapsed'`
+
 ```javascript
 app.use(logfmt.requestLogger({immediate: true}, function(req, res){
   return {
