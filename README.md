@@ -130,14 +130,15 @@ app.use(logfmt.requestLogger());
 //=> method=POST status=200 content-type=application/logplex-1 elapsed=4ms
 ```
 
-#### `logfmt.requestLogger([options], [formatter(req, res)])
+#### `logfmt.requestLogger([options], [formatter(req, res)])`
 
 Defaults to timing the request and logging the HTTP method, status code, and content-type.
 
 Valid Options:
 
 - `immediate`: log before call to `next()` (ie: before the request finishes)
-- `elapsed`: in non
+- `elapsed`: renames the `elapsed` key to a key of your choice when in
+             non-immediate mode
 
 ```javascript
 app.use(logfmt.requestLogger({immediate: true}, function(req, res){
@@ -146,6 +147,15 @@ app.use(logfmt.requestLogger({immediate: true}, function(req, res){
   }
 }));
 //=> method=POST
+```
+
+```javascript
+app.use(logfmt.requestLogger({elapsed: 'request.time'}, function(req, res){
+  return {
+    method: req.method
+  }
+}));
+//=> method=POST request.time=12ms
 ```
 
 ##### `formater(req, res)`
