@@ -123,10 +123,44 @@ logfmt.stream = process.stderr
 logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
+## express/restify logging middleware
+
+```javascript
+app.use(logfmt.requestLogger());
+//=> method=POST status=200 content-type=application/logplex-1 elapsed=4ms
+```
+
+#### `logfmt.requestLogger([options], [formatter(req, res)])
+
+Defaults to timing the request and logging the HTTP method, status code, and content-type.
+
+Valid Options:
+
+- `immediate`: log before call to `next()` (ie: before the request finishes)
+- `elapsed`: in non
+
+```javascript
+app.use(logfmt.requestLogger({immediate: true}, function(req, res){
+  return {
+    method: req.method
+  }
+}));
+//=> method=POST
+
+##### `formater(req, res)`
+
+A formatter takes the request and response and returns a JSON object for `logfmt.log`
+
+```javascript
+app.use(logfmt.requestLogger(function(req, res){
+  return {
+    method: req.method
+  }
+}));
+//=> method=POST elapsed=4ms
+```
 
 ## express/restify parsing middleware
-
-This we have handled.
 
 ```javascript
   // streaming
