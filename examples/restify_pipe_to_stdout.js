@@ -7,12 +7,13 @@ var server = restify.createServer({
 })
 
 server.use(logfmt.bodyParserStream());
+server.use(logfmt.requestLogger());
 
 server.post('/logs', function(req, res, next){
   req.body.pipe(through(function(line){
     console.log(JSON.stringify(line));
   }))
-  res.send(200, 'OK');
+  res.send(201, 'OK');
   return next();
 })
 

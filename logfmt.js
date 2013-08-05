@@ -7,6 +7,8 @@ var logger = require('./lib/logger');
 exports.log = logger.log;
 exports.time = logger.time;
 
+exports.requestLogger = require('./lib/request_logger');
+
 //Syncronous Body Parser
 var bodyParser = require('./lib/body_parser')
 exports.bodyParser = function(options) {

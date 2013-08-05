@@ -123,10 +123,72 @@ logfmt.stream = process.stderr
 logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
+## express/restify logging middleware
+
+```javascript
+app.use(logfmt.requestLogger());
+//=> ip=127.0.0.1 time=2013-08-05T20:50:19.216Z method=POST path=/logs status=200 content_length=337 content_type=application/logplex-1 elapsed=4ms
+```
+
+#### `logfmt.requestLogger([options], [formatter(req, res)])`
+
+Defaults to timing the request and logging the HTTP method, status code, and content-type.
+
+Valid Options:
+
+- `immediate`: log before call to `next()` (ie: before the request finishes)
+- `elapsed`: renames the `elapsed` key to a key of your choice when in
+             non-immediate mode
+
+Defaults to `immediate: true` and `elapsed: 'elapsed'`
+
+```javascript
+app.use(logfmt.requestLogger({immediate: true}, function(req, res){
+  return {
+    method: req.method
+  }
+}));
+//=> method=POST
+```
+
+```javascript
+app.use(logfmt.requestLogger({elapsed: 'request.time'}, function(req, res){
+  return {
+    "request.method": req.method
+  }
+}));
+//=> request.method=POST request.time=12ms
+```
+
+##### `formater(req, res)`
+
+A formatter takes the request and response and returns a JSON object for `logfmt.log`
+
+```javascript
+app.use(logfmt.requestLogger(function(req, res){
+  return {
+    method: req.method
+  }
+}));
+//=> method=POST elapsed=4ms
+```
+
+If no formatter is supplied it will default to `logfmt.requestLogger.commonFormatter` which is based
+on having similiar fields to the Apache Common Log format.
+
+```javascript
+app.use(logfmt.requestLogger(function(req, res){
+  var data = logfmt.requestLogger.commonFormatter(req, res)
+  return {
+    ip: data.ip,
+    time: data.time,
+    foo: 'bar'
+  };
+}));
+//=> ip=127.0.0.1 time=2013-08-05T20:50:19.216Z foo=bar elapsed=4ms
+```
 
 ## express/restify parsing middleware
-
-This we have handled.
 
 ```javascript
   // streaming

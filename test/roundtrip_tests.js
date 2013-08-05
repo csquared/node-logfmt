@@ -1,12 +1,8 @@
 var logfmt = require('../logfmt'),
     assert = require('assert');
 
-var mock_sink = {
-  logline: '',
-  write: function(string) {
-    this.logline = string;
-  }
-}
+var OutStream = require('./outstream');
+var mock_sink = new OutStream;
 
 suite('logfmt.parse(logfmt.log)', function(){
   test("key value pairs are restored", function(){
