@@ -5,6 +5,7 @@ var through = require('through');
 var logfmt  = require('../logfmt');
 
 app.use(logfmt.bodyParserStream());
+app.use(logfmt.requestLogger());
 
 app.post('/logs', function(req, res){
   if(!req.body) return res.send('OK');
