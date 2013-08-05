@@ -127,7 +127,7 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 
 ```javascript
 app.use(logfmt.requestLogger());
-//=> method=POST status=200 content-type=application/logplex-1 elapsed=4ms
+//=> ip=127.0.0.1 time=2013-08-05T20:50:19.216Z method=POST path=/logs status=200 content_length=337 content_type=application/logplex-1 elapsed=4ms
 ```
 
 #### `logfmt.requestLogger([options], [formatter(req, res)])`
@@ -171,6 +171,21 @@ app.use(logfmt.requestLogger(function(req, res){
   }
 }));
 //=> method=POST elapsed=4ms
+```
+
+If no formatter is supplied it will default to `logfmt.requestLogger.commonFormatter` which is based
+on having similiar fields to the Apache Common Log format.
+
+```javascript
+app.use(logfmt.requestLogger(function(req, res){
+  var data = logfmt.requestLogger.commonFormatter(req, res)
+  return {
+    ip: data.ip,
+    time: data.time,
+    foo: 'bar'
+  };
+}));
+//=> ip=127.0.0.1 time=2013-08-05T20:50:19.216Z foo=bar elapsed=4ms
 ```
 
 ## express/restify parsing middleware
