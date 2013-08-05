@@ -146,6 +146,7 @@ app.use(logfmt.requestLogger({immediate: true}, function(req, res){
   }
 }));
 //=> method=POST
+```
 
 ##### `formater(req, res)`
 
