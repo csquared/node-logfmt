@@ -66,6 +66,21 @@ suite('logfmt.requestLogger', function(){
     done()
   })
 
+  test("can just send options", function(done){
+    var mockReq = {method: 'GET'}
+    mockReq.header = function(){
+      return 'foo';
+    }
+    var mockRes = {statusCode: 200}
+    var next = function(){
+      assert.equal('method=GET status=200 content-type=foo\n', logfmt.stream.logline);
+    };
+
+    var logger = logfmt.requestLogger({immediate: true})
+    logger(mockReq, mockRes, next)
+    done()
+  })
+
   test("elapsed option renames elapsed key", function(done){
     var mockReq = {method: 'GET'}
     var mockRes = {statusCode: 200}
