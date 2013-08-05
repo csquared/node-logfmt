@@ -152,10 +152,10 @@ app.use(logfmt.requestLogger({immediate: true}, function(req, res){
 ```javascript
 app.use(logfmt.requestLogger({elapsed: 'request.time'}, function(req, res){
   return {
-    method: req.method
+    "request.method": req.method
   }
 }));
-//=> method=POST request.time=12ms
+//=> request.method=POST request.time=12ms
 ```
 
 ##### `formater(req, res)`
