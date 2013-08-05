@@ -8,25 +8,6 @@ suite('logfmt.requestLogger', function(){
     logfmt.stream = new OutStream;
   })
 
-  test("empty default logs method, status, and elapsed", function(done){
-    var mockReq = {method: 'GET'}
-    mockReq.header = function(){
-      return 'foo';
-    }
-    var mockRes = {statusCode: 200}
-    mockRes.end = function(data, encoding){}
-    var next = function(){
-      assert.equal('', logfmt.stream.logline);
-    };
-    var logger = logfmt.requestLogger();
-    logger(mockReq, mockRes, next)
-    mockRes.end()
-    var expectation = /method=GET status=200 content-type=foo elapsed=\dms\n/
-    var actual = logfmt.stream.logline;
-    assert(expectation.test(actual), actual);
-    done();
-  })
-
   test("timing logs on res.end()", function(done){
     var mockReq = {method: 'GET'}
     var mockRes = {statusCode: 200}
@@ -73,7 +54,10 @@ suite('logfmt.requestLogger', function(){
     }
     var mockRes = {statusCode: 200}
     var next = function(){
-      assert.equal('method=GET status=200 content-type=foo\n', logfmt.stream.logline);
+      var actual = logfmt.parse(logfmt.stream.logline);
+      assert.equal('foo', actual.ip);
+      assert.equal('foo', actual.content_type);
+      assert.equal('foo', actual.content_length);
     };
 
     var logger = logfmt.requestLogger({immediate: true})
@@ -101,6 +85,59 @@ suite('logfmt.requestLogger', function(){
     var actual = logfmt.stream.logline;
     assert(expectation.test(actual), actual);
     done()
+  })
+
+  test("empty defaults to commonLogger", function(done){
+    var mockReq = {method: 'GET'}
+    mockReq.path = '/bar'
+    mockReq.ip = '1.0.0.1'
+    var headers = {
+      "content-type": 'foo/foo',
+      "content-length": 123
+    }
+    mockReq.header = function(h){
+      return headers[h];
+    }
+    var mockRes = {statusCode: 200}
+    mockRes.end = function(data, encoding){}
+    var next = function(){
+      assert.equal('', logfmt.stream.logline);
+    };
+    var logger = logfmt.requestLogger();
+    logger(mockReq, mockRes, next)
+    mockRes.end()
+    var actual = logfmt.parse(logfmt.stream.logline);
+    assert.equal(actual.path, '/bar');
+    assert.equal(actual.ip, '1.0.0.1');
+    assert.equal(actual.content_type, 'foo/foo');
+    assert.equal(actual.content_length, '123');
+    assert(/\dms/.test(actual.elapsed), 'includes elapsed')
+    assert(actual.time)
+    done();
+  })
+
+  test("commonFormatter uses correct path", function(){
+    var mockReq = {method: 'GET'}
+    mockReq.path = function(){ return '/bar' }
+    mockReq.ip = '1.0.0.1'
+    mockReq.header = function(h){ return 'foo' }
+    var mockRes = {statusCode: 200}
+    var actual = logfmt.requestLogger.commonFormatter(mockReq, mockRes);
+    assert.equal('/bar', actual.path);
+  })
+
+  test("commonFormatter uses correct ip", function(){
+    var mockReq = {method: 'GET'}
+    mockReq.path = '/bar'
+    var headers = {
+      "x-forwarded-for": '10.0.1.1'
+    }
+    mockReq.header = function(h){
+      return headers[h] || 'foo';
+    }
+    var mockRes = {statusCode: 200}
+    var actual = logfmt.requestLogger.commonFormatter(mockReq, mockRes);
+    assert.equal('10.0.1.1', actual.ip);
   })
 
 })
