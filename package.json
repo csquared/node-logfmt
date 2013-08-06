@@ -1,6 +1,6 @@
 {
   "name": "logfmt",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Key-Value log line parser",
   "main": "logfmt.js",
   "scripts": {
