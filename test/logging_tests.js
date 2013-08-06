@@ -1,12 +1,8 @@
 var logfmt = require('../logfmt'),
     assert = require('assert');
 
-var mock_sink = {
-  logline: '',
-  write: function(string) {
-    this.logline = string;
-  }
-}
+var OutStream = require('./outstream');
+var mock_sink = new OutStream;
 
 suite('logfmt.log', function() {
   test("logs simple key value pairs", function(){
@@ -50,10 +46,10 @@ suite('logfmt.log', function() {
 
   test("setting sink at object level", function(){
     var data = {foo: "hello kitty"}
-    var sink = logfmt.sink;
+    var stream = logfmt.stream;
     logfmt.stream = mock_sink;
     logfmt.log(data);
     assert.equal("foo=\"hello kitty\"\n", mock_sink.logline)
-    logfmt.stream = sink;
+    logfmt.stream = stream;
   })
 })
