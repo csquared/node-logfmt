@@ -160,7 +160,7 @@ app.use(logfmt.requestLogger({elapsed: 'request.time'}, function(req, res){
 //=> request.method=POST request.time=12ms
 ```
 
-##### `formater(req, res)`
+##### `formatter(req, res)`
 
 A formatter takes the request and response and returns a JSON object for `logfmt.log`
 
