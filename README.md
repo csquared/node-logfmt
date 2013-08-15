@@ -132,8 +132,6 @@ app.use(logfmt.requestLogger());
 
 #### `logfmt.requestLogger([options], [formatter(req, res)])`
 
-Defaults to timing the request and logging the HTTP method, status code, and content-type.
-
 Valid Options:
 
 - `immediate`: log before call to `next()` (ie: before the request finishes)
