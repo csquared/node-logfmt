@@ -132,6 +132,9 @@ app.use(logfmt.requestLogger());
 
 #### `logfmt.requestLogger([options], [formatter(req, res)])`
 
+If no formatter is supplied it will default to `logfmt.requestLogger.commonFormatter` which is based
+on having similiar fields to the Apache Common Log format.
+
 Valid Options:
 
 - `immediate`: log before call to `next()` (ie: before the request finishes)
@@ -171,8 +174,7 @@ app.use(logfmt.requestLogger(function(req, res){
 //=> method=POST elapsed=4ms
 ```
 
-If no formatter is supplied it will default to `logfmt.requestLogger.commonFormatter` which is based
-on having similiar fields to the Apache Common Log format.
+It's always possible to piggyback on top of the `commonFormatter`
 
 ```javascript
 app.use(logfmt.requestLogger(function(req, res){
