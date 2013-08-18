@@ -34,17 +34,6 @@ suite('logfmt.namespace', function() {
     assert.equal("ns=logfmt foo=bar a=14\n", mock_sink.logline)
   })
 
-  test("works with logfmt.time", function(done){
-    var logfmt2 = logfmt.namespace({ns: 'logfmt'})
-    logfmt2.time(function(logger){
-      var mock_sink = new OutStream;
-      logger.log({}, mock_sink);
-      var actual = mock_sink.logline;
-      assert(/^ns=logfmt elapsed=\dms\n$/.test(actual), actual)
-      done();
-    })
-  })
-
   test("can chain namespace calls", function(done){
     var logfmt2 = logfmt.namespace({ns: 'logfmt'})
                         .namespace({thing: 'data'})
