@@ -10,9 +10,9 @@
     "logfmt": "./bin/logfmt"
   },
   "dependencies": {
-    "split": "*",
-    "through": "*",
-    "readable-stream": "*"
+    "split": "0.2.x",
+    "through": "2.3.x",
+    "readable-stream": "1.0.x"
   },
   "devDependencies": {
     "express": "3.*",
