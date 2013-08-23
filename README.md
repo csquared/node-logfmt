@@ -46,6 +46,37 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
+You can have multiple, isolated logfmts by using `new`.
+
+```javascript
+var logfmt = require('logfmt');
+var errorLogger = new logfmt;
+errorLogger.stream = process.stderr
+
+logfmt.log({hello: 'stdout'});
+//=> hello=stdout
+
+errorLogger.log({hello: 'stderr'});
+//=> hello=stderr
+```
+
+### `logfmt.namespace(object)`
+
+Returns a new `logfmt` with object's data included in every `log` call.
+
+```javascript
+var logfmt = require('logfmt').namespace({app: 'logfmt'});
+
+logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
+//=> app=logfmt foo=bar a=14 baz="hello kitty"
+
+logfmt.log({})
+//=> app=logfmt
+
+logfmt.log({hello: 'world'})
+//=> app=logfmt hello=world
+```
+
 ### `logfmt.time([label], [data], callback(logger))`
 
 #### `logger.log([data], [stream])`
@@ -104,6 +135,17 @@ logfmt.time({foo: 'bar'}, function(logger){
   logger.log({at: 'function'});
 })
 //=> at=function foo=bar elapsed=1ms
+```
+
+`time` works with `namespace` as expected
+
+```javascript
+var logfmt = require('logfmt').namespace({app: 'logfmt'})
+
+logfmt.time({foo: 'bar'}, function(logger){
+  logger.log({at: 'function'});
+})
+//=> app=logfmt at=function foo=bar elapsed=1ms
 ```
 
 ### customizing logging location
