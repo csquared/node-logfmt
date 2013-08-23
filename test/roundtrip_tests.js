@@ -17,8 +17,14 @@ suite('logfmt.parse(logfmt.log)', function(){
     assert.deepEqual(data, logfmt.parse(mock_sink.logline));
   })
 
-  test("quoted strings are restored", function(){
+  test("quoted strings with spaces are restored", function(){
     var data = {foo: "hello kitty"}
+    logfmt.log(data, mock_sink);
+    assert.deepEqual(data, logfmt.parse(mock_sink.logline))
+  })
+
+  test("quoted strings with equals are restored", function(){
+    var data = {foo: "hello=kitty"}
     logfmt.log(data, mock_sink);
     assert.deepEqual(data, logfmt.parse(mock_sink.logline))
   })

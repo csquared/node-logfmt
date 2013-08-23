@@ -23,6 +23,12 @@ suite('logfmt.log', function() {
     assert.equal("foo=\"hello kitty\"\n", mock_sink.logline)
   })
 
+  test("quotes strings with equals in them", function(){
+    var data = {foo: "hello=kitty"}
+    logfmt.log(data, mock_sink);
+    assert.equal("foo=\"hello=kitty\"\n", mock_sink.logline)
+  })
+
   test("escapes quotes within strings with spaces in them", function(){
     var data = {foo: 'hello my "friend"'}
     logfmt.log(data, mock_sink);

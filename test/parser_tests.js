@@ -32,6 +32,10 @@ suite('logfmt.parse', function() {
       logfmt.parse('hello=\'kitty\''));
   })
 
+  test("string with equals", function(){
+    assert.deepEqual({foo:"hello=kitty"}, logfmt.parse('foo="hello=kitty"'));
+  })
+
   test("readme string parses", function(){
     var test_string = "foo=bar a=14 baz=\"hello kitty\" "
     test_string += "cool%story=bro f %^asdf ";
