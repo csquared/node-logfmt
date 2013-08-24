@@ -4,7 +4,7 @@
   "description": "Key-Value log line parser",
   "main": "logfmt.js",
   "scripts": {
-    "test": "./test/test"
+    "test": "mocha"
   },
   "bin": {
     "logfmt": "./bin/logfmt"
