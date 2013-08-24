@@ -1,6 +1,6 @@
 # node-logfmt
 
-[![Build Status](https://travis-ci.org/csquared/node-logfmt.png)](https://travis-ci.org/[csquared]/[node-logfmt])
+[![Build Status](https://travis-ci.org/csquared/node-logfmt.png)](https://travis-ci.org/csquared/node-logfmt)
 
 
 "logfmt" is the name for a [key value logging convention](https://github.com/kr/logfmt) we've adopted at Heroku.
