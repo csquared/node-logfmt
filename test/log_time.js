@@ -39,10 +39,10 @@ suite('logfmt.time', function() {
     logfmt.time({foo: 'bar'}, function(logger){
       logger.log();
       var actual = logfmt.stream.logline;
-      assert(/^foo=bar elapsed=\dms\n$/.test(actual), actual)
+      assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
       logger.log({moar: 'data'});
       var actual = logfmt.stream.logline;
-      assert(/^moar=data foo=bar elapsed=\dms\n$/.test(actual), actual)
+      assert(/^moar=data foo=bar elapsed=\d+ms\n$/.test(actual), actual)
       done();
     })
   })
@@ -65,7 +65,7 @@ suite('logfmt.time', function() {
     logfmt.time('time', function(logger){
       logger.log({foo: 'bar'});
       var actual = logfmt.stream.logline;
-      assert(/^foo=bar time=\dms\n$/.test(actual), actual)
+      assert(/^foo=bar time=\d+ms\n$/.test(actual), actual)
       done();
     })
   })
@@ -75,7 +75,7 @@ suite('logfmt.time', function() {
     logfmt.time(function(logger){
       logger.log({foo: 'bar'}, mock_sink);
       var actual = mock_sink.logline;
-      assert(/^foo=bar elapsed=\dms\n$/.test(actual), actual)
+      assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
       done();
     })
   })
@@ -88,11 +88,11 @@ suite('logfmt.time', function() {
     logfmt.time(function(logger){
       logger.log({foo: 'bar'}, mock_sink);
       var actual = mock_sink.logline;
-      assert(/^foo=bar elapsed=\dms\n$/.test(actual), actual)
+      assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
       var wrapped = function() {
         logger.log({bar: 'foo'}, mock_sink);
         var actual = mock_sink.logline;
-        assert(/^bar=foo elapsed=2\dms\n$/.test(actual), actual)
+        assert(/^bar=foo elapsed=2\d+ms\n$/.test(actual), actual)
         done();
       }
       setTimeout(wrapped, 20);
