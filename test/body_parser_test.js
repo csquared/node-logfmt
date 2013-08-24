@@ -1,5 +1,5 @@
 var logfmt = require('../logfmt'),
-    stream = require('stream'),
+    stream = require('readable-stream'),
     assert = require('assert');
 
 suite('logfmt.bodyParser', function(){
