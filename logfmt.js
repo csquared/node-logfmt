@@ -8,8 +8,11 @@ var logfmt = function(){
   this.log = logger.log;
   this.time = logger.time;
   this.namespace = logger.namespace;
+  this.error = logger.error;
 
   this.requestLogger = require('./lib/request_logger');
+
+  this.maxErrorLines = 10;
 
   //Syncronous Body Parser
   var bodyParser = require('./lib/body_parser')
