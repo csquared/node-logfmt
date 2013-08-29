@@ -29,6 +29,17 @@ var logfmt = function(){
     var mime = options.contentType || "application/logplex-1"
     return bodyParserStream({contentType: mime, parser: parse})
   }
+
+  var outStreamMock = require('./lib/out_stream_mock');
+  this.mockStream = outStreamMock;
+  this.mock = function mock(){
+    this._stream = this.stream;
+    this.stream = new outStreamMock();
+  }
+
+  this.unMock = function unMock(){
+    this.stream = this._stream;
+  }
 }
 
 exports = module.exports = logfmt;

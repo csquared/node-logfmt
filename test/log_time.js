@@ -1,12 +1,9 @@
 var logfmt = new require('../logfmt'),
     assert = require('assert');
 
-var OutStream = require('./outstream');
-
 suite('logfmt.time', function() {
-  setup(function(){
-    logfmt.stream = new OutStream;
-  })
+  setup(function(){ logfmt.mock() })
+  teardown(function(){ logfmt.unMock() })
 
   test("logs the time", function(done){
     logfmt.time(function(logger){
@@ -71,7 +68,7 @@ suite('logfmt.time', function() {
   })
 
   test("supports log(data, stream) interface", function(done){
-    var mock_sink = new OutStream;
+    var mock_sink = new logfmt.mockStream;
     logfmt.time(function(logger){
       logger.log({foo: 'bar'}, mock_sink);
       var actual = mock_sink.logline;
@@ -84,7 +81,7 @@ suite('logfmt.time', function() {
   // and call `log` multiple times.
   // uses setTimeout to ensure the timing happens in 20ms
   test("can log twice", function(done){
-    var mock_sink = new OutStream;
+    var mock_sink = new logfmt.mockStream;
     logfmt.time(function(logger){
       logger.log({foo: 'bar'}, mock_sink);
       var actual = mock_sink.logline;

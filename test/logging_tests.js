@@ -1,8 +1,7 @@
 var logfmt = require('../logfmt'),
     assert = require('assert');
 
-var OutStream = require('./outstream');
-var mock_sink = new OutStream;
+var mock_sink = new logfmt.mockStream;
 
 suite('logfmt.log', function() {
   test("logs simple key value pairs", function(){
