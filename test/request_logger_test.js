@@ -140,4 +140,20 @@ suite('logfmt.requestLogger', function(){
     assert.equal('10.0.1.1', actual.ip);
   })
 
+  test("requestLogger works with namespace", function(done){
+    var mockReq = {method: 'GET'}
+    mockReq.header = function(){
+      return 'foo';
+    }
+    var mockRes = {statusCode: 200}
+    var next = function(){
+      var actual = logfmt.parse(logfmt.stream.logline);
+      assert.equal('namespacetest', actual.ns);
+    };
+
+    var logger = logfmt.namespace({ns:'namespacetest'}).requestLogger({immediate: true})
+    logger(mockReq, mockRes, next)
+    done()
+  })
+
 })
