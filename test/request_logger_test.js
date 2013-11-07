@@ -53,6 +53,9 @@ suite('logfmt.requestLogger', function(){
       return 'foo';
     }
     var mockRes = {statusCode: 200}
+    mockRes.get = function(){
+      return 'foo';
+    }
     var next = function(){
       var actual = logfmt.parse(logfmt.stream.logline);
       assert.equal('foo', actual.ip);
@@ -91,14 +94,17 @@ suite('logfmt.requestLogger', function(){
     var mockReq = {method: 'GET'}
     mockReq.path = '/bar'
     mockReq.ip = '1.0.0.1'
+    mockReq.header = function(h){
+      return 'foo'
+    }
+    var mockRes = {statusCode: 200}
     var headers = {
       "content-type": 'foo/foo',
       "content-length": 123
     }
-    mockReq.header = function(h){
+    mockRes.get = function(h){
       return headers[h];
     }
-    var mockRes = {statusCode: 200}
     mockRes.end = function(data, encoding){}
     var next = function(){
       assert.equal('', logfmt.stream.logline);
@@ -122,6 +128,7 @@ suite('logfmt.requestLogger', function(){
     mockReq.ip = '1.0.0.1'
     mockReq.header = function(h){ return 'foo' }
     var mockRes = {statusCode: 200}
+    mockRes.get = function(){ return 'foo' }
     var actual = logfmt.requestLogger.commonFormatter(mockReq, mockRes);
     assert.equal('/bar', actual.path);
   })
@@ -136,6 +143,9 @@ suite('logfmt.requestLogger', function(){
       return headers[h] || 'foo';
     }
     var mockRes = {statusCode: 200}
+    mockRes.get = function(){
+      return 'foo';
+    }
     var actual = logfmt.requestLogger.commonFormatter(mockReq, mockRes);
     assert.equal('10.0.1.1', actual.ip);
   })
