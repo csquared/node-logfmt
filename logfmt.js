@@ -10,8 +10,6 @@ var logfmt = function(){
   this.namespace = logger.namespace;
   this.error = logger.error;
 
-  this.requestLogger = require('./lib/request_logger');
-
   this.maxErrorLines = 10;
 
   //Syncronous Body Parser
@@ -29,6 +27,13 @@ var logfmt = function(){
     var mime = options.contentType || "application/logplex-1"
     return bodyParserStream({contentType: mime, parser: parse})
   }
+
+  //Request Logger
+  var requestLogger = require('./lib/request_logger');
+  this.requestLogger = function(options, formatter){
+    return requestLogger.init(this, options, formatter);
+  }
+  this.requestLogger.commonFormatter = requestLogger.commonFormatter
 }
 
 exports = module.exports = logfmt;
