@@ -156,6 +156,9 @@ suite('logfmt.requestLogger', function(){
       return 'foo';
     }
     var mockRes = {statusCode: 200}
+    mockRes.get = function(){
+      return 'foo';
+    }
     var next = function(){
       var actual = logfmt.parse(logfmt.stream.logline);
       assert.equal('namespacetest', actual.ns);
