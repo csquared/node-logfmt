@@ -46,4 +46,17 @@ suite('logfmt.namespace', function() {
       done();
     })
   })
+
+  test("works when a stream is not passed in", function(){
+    var logfmt2 = logfmt.namespace();
+    var mock_sink = new OutStream;
+    var data = '';
+    try {
+      logfmt2.log({"foo":"bar"});
+      data = 'success';
+    } catch (err) {
+      data = 'failure';
+    }
+    assert.equal('success', data);
+  })
 })
