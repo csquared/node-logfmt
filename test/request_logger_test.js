@@ -151,14 +151,10 @@ suite('logfmt.requestLogger', function(){
   })
 
   test("requestLogger works with namespace", function(done){
-    var mockReq = {method: 'GET'}
-    mockReq.header = function(){
-      return 'foo';
-    }
-    var mockRes = {statusCode: 200}
-    mockRes.get = function(){
-      return 'foo';
-    }
+    var mockReq    = {method: 'GET'}
+    mockReq.header = function(){ return 'foo'; }
+    var mockRes    = {statusCode: 200}
+    mockRes.get    = function(){ return 'foo'; }
     var next = function(){
       var actual = logfmt.parse(logfmt.stream.logline);
       assert.equal('namespacetest', actual.ns);
