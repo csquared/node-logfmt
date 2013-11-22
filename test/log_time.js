@@ -80,6 +80,28 @@ suite('logfmt.time', function() {
     })
   })
 
+  test("calls the callback if provided", function(){
+    var test;
+    logfmt.time(function(logger){
+      test = true;
+    });
+    assert(test);
+  })
+
+  test("does not call the callback if not provided", function(){
+    assert.doesNotThrow(function(){
+      logfmt.time();
+    });
+  })
+
+  test("returns a logger", function(){
+    var logger1, logger2;
+    logger1 = logfmt.time(function(logger){
+      logger2 = logger;
+    });
+    assert.equal(logger1, logger2);
+  })
+
   // tests you can pass the logger into a closure
   // and call `log` multiple times.
   // uses setTimeout to ensure the timing happens in 20ms
