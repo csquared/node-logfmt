@@ -80,7 +80,7 @@ logfmt.log({hello: 'world'})
 //=> app=logfmt hello=world
 ```
 
-### `logfmt.time([label], [data], callback(logger))`
+### `logfmt.time([label], [data], [callback(logger)])`
 
 #### `logger.log([data], [stream])`
 
@@ -99,7 +99,14 @@ logfmt.time(function(logger){
 //=> elapsed=1ms
 ```
 
-String `label` changes the key `<string>=<milliseconds>ms`
+If you don't pass in callback you get the logger returned.
+```javascript
+var logger = logfmt.time();
+logger.log();
+//=> elapsed=1ms
+```
+
+String `label` changes the key to `<string>=<milliseconds>ms`
 
 ```javascript
 logfmt.time('time', function(logger){
