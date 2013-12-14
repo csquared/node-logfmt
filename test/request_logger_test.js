@@ -133,6 +133,15 @@ suite('logfmt.requestLogger', function(){
     assert.equal('/bar', actual.path);
   })
 
+  test("commonFormatter uses correct path w. vanilla http", function(){
+    var mockReq = {method: 'GET'}
+    mockReq.url = '/bar'
+    mockReq.ip = '1.0.0.1'
+    var mockRes = {statusCode: 200}
+    var actual = logfmt.requestLogger.commonFormatter(mockReq, mockRes);
+    assert.equal('/bar', actual.path);
+  })
+
   test("commonFormatter uses correct ip", function(){
     var mockReq = {method: 'GET'}
     mockReq.path = '/bar'
