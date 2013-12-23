@@ -1,8 +1,8 @@
-var logfmt = function(){
+var logfmt = function(stream){
   var parse = require('./lib/logfmt_parser').parse;
 
   this.parse = parse;
-  this.stream = process.stdout;
+  this.stream = stream || process.stdout;
 
   var logger = require('./lib/logger');
   this.log = logger.log;

@@ -21,4 +21,12 @@ suite('new logfmt', function() {
     assert.equal("foo=bar\n", logfmt2.stream.logline)
     assert.equal("foo=bar a=14\n", logfmt3.stream.logline)
   })
+
+  test('constructor accepts a stream', function(){
+    stream = new OutStream;
+    var logfmt2 = new logfmt(stream);
+    var data = {foo: 'bar', a: 14}
+    logfmt2.log(data);
+    assert.equal("foo=bar a=14\n", stream.logline)
+  })
 })
