@@ -6,7 +6,9 @@ var options = {
   path: '/logs',
   method: 'POST',
   headers: {
-    'Content-Type':'application/logplex-1'
+    'Content-Type':'application/logplex-1',
+    'X-Request-ID':'D1908y1rl12k3jhaos9uy8a'
+
   }
 };
 
