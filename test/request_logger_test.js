@@ -132,7 +132,7 @@ suite('logfmt.requestLogger', function(){
       "x-request-id": '56e29d80-fb82-454c-b538-7af3e9d0b18c'
     }
     mockReq.header = function(h){
-      return headers[h] || 'foo';
+      return headers[h];
     }
     mockRes.get = function(h){
       return headers[h];
