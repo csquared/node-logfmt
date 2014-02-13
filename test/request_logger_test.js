@@ -122,6 +122,33 @@ suite('logfmt.requestLogger', function(){
     done();
   })
 
+
+  test("emits x-request-id header as request_id if present", function(done){
+    var mockReq = {method: 'GET'}
+    mockReq.path = '/bar'
+    mockReq.ip = '1.0.0.1'
+    var mockRes = {statusCode: 200}
+    var headers = {
+      "x-request-id": '56e29d80-fb82-454c-b538-7af3e9d0b18c'
+    }
+    mockReq.header = function(h){
+      return headers[h] || 'foo';
+    }
+    mockRes.get = function(h){
+      return headers[h];
+    }
+    mockRes.end = function(data, encoding){}
+    var next = function(){
+      assert.equal('', logfmt.stream.logline);
+    };
+    var logger = logfmt.requestLogger();
+    logger(mockReq, mockRes, next)
+    mockRes.end()
+    var actual = logfmt.parse(logfmt.stream.logline);
+    assert.equal(actual.request_id, '56e29d80-fb82-454c-b538-7af3e9d0b18c');
+    done();
+  })
+
   test("commonFormatter uses correct path", function(){
     var mockReq = {method: 'GET'}
     mockReq.path = function(){ return '/bar' }
