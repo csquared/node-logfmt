@@ -1,4 +1,4 @@
-var logfmt = require('../logfmt'),
+var logfmt = new require('../logfmt'),
     assert = require('assert');
 
 var OutStream = require('./outstream');
@@ -37,7 +37,7 @@ suite('logfmt.namespace.time', function() {
       assert(/^ns=logfmt foo=bar elapsed=\dms\n$/.test(actual), actual)
       logger.log({moar: 'data'});
       var actual = logfmt2.stream.logline;
-      assert(/^ns=logfmt moar=data foo=bar elapsed=\dms\n$/.test(actual),
+      assert(/^ns=logfmt foo=bar moar=data elapsed=\dms\n$/.test(actual),
               actual)
       done();
     })
