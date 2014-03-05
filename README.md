@@ -180,7 +180,7 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 
 `logfmt.error()` Accepts a Javascript `Error` object and converts it to logfmt format
 ```javascript
-var logfmt = require('logfmmt');
+var logfmt = require('logfmt');
 logfmt.error(new Error('test error'));
 //=> at=error id=12345 message="test error"
 //=> at=error id=12345 line=0 trace="Error: test error"
