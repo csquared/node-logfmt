@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "split": "0.2.x",
-    "through": "2.3.x"
+    "through": "2.3.x",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
     "express": "3.3.x",

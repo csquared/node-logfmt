@@ -1,40 +1,39 @@
-var logfmt = function(stream){
-  var parse = require('./lib/logfmt_parser').parse;
+var _                = require('lodash');
+var bodyParser       = require('./lib/body_parser');
+var bodyParserStream = require('./lib/body_parser_stream');
+var logfmtParser     = require('./lib/logfmt_parser');
+var logger           = require('./lib/logger');
+var requestLogger    = require('./lib/request_logger');
 
-  this.parse = parse;
-  this.stream = stream || process.stdout;
-
-  var logger = require('./lib/logger');
-  this.log = logger.log;
-  this.time = logger.time;
-  this.namespace = logger.namespace;
-  this.error = logger.error;
-
+function logfmt(stream, defaultData) {
+  this.defaultData = defaultData || {};
   this.maxErrorLines = 10;
-
-  //Syncronous Body Parser
-  var bodyParser = require('./lib/body_parser')
-  this.bodyParser = function(options) {
-    if(options == null) options = {};
-    var mime = options.contentType || "application/logplex-1"
-    return bodyParser({contentType: mime, parser: parse})
-  }
-
-  //Stream Body Parser
-  var bodyParserStream = require('./lib/body_parser_stream');
-  this.bodyParserStream = function(options) {
-    if(options == null) options = {};
-    var mime = options.contentType || "application/logplex-1"
-    return bodyParserStream({contentType: mime, parser: parse})
-  }
-
-  //Request Logger
-  var requestLogger = require('./lib/request_logger');
-  this.requestLogger = function(options, formatter){
-    return requestLogger.init(this, options, formatter);
-  }
-  this.requestLogger.commonFormatter = requestLogger.commonFormatter
+  this.stream = stream || process.stdout;
 }
 
-exports = module.exports = logfmt;
-logfmt.call(exports)
+_.extend(logfmt.prototype, logger);
+
+logfmt.prototype.parse = logfmtParser.parse;
+
+// Synchronous body parser
+logfmt.prototype.bodyParser = function(options) {
+  options || (options = {});
+  var mime = options.contentType || "application/logplex-1";
+  return bodyParser({ contentType: mime, parser: this.parse });
+};
+
+// Stream parser
+logfmt.prototype.bodyParserStream = function(options) {
+  options || (options = {});
+  var mime = options.contentType || "application/logplex-1";
+  return bodyParserStream({ contentType: mime, parser: this.parse });
+};
+
+logfmt.prototype.requestLogger = function(options, formatter) {
+  return requestLogger.init(this, options, formatter);
+};
+
+logfmt.prototype.requestLogger.commonFormatter = requestLogger.commonFormatter;
+
+_.extend(logfmt, logfmt.prototype);
+module.exports = logfmt;

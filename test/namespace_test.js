@@ -36,7 +36,7 @@ suite('logfmt.namespace', function() {
 
   test("can chain namespace calls", function(done){
     var logfmt2 = logfmt.namespace({ns: 'logfmt'})
-                        .namespace({thing: 'data'})
+                        .namespace({thing: 'data'});
 
     logfmt2.time(function(logger){
       var mock_sink = new OutStream;
