@@ -44,6 +44,8 @@ suite('logfmt.bodyParserStream', function() {
 
   test("converts body lines to object read stream", function(done){
     var mockReq = new stream.Readable;
+    var data;
+
     mockReq.header = function(){
       return 'application/logplex-1';
     }
@@ -56,15 +58,22 @@ suite('logfmt.bodyParserStream', function() {
     parser(mockReq, null, next)
 
     mockReq.body.on('readable', function(){
-      var data = mockReq.body.read();
-      assert.deepEqual(data, {hello: 'kitty'})
-      done();
+      var chunk = mockReq.body.read();
+      if (chunk !== null) {
+        data = chunk;
+      }
     })
+
+    mockReq.body.on('end', function() {
+      assert.deepEqual(data, { hello: 'kitty' });
+      done();
+    });
   })
 
 
   test("accepts contentType option", function(done){
     var mockReq = new stream.Readable;
+    var data;
     mockReq.header = function(){
       return 'foo';
     }
@@ -77,10 +86,16 @@ suite('logfmt.bodyParserStream', function() {
     parser(mockReq, null, next)
 
     mockReq.body.on('readable', function(){
-      var data = mockReq.body.read();
-      assert.deepEqual(data, {hello: 'kitty'})
-      done();
+      var chunk = mockReq.body.read();
+      if (chunk !== null) {
+        data = chunk;
+      }
     })
+
+    mockReq.body.on('end', function() {
+      assert.deepEqual(data, { hello: 'kitty' })
+      done();
+    });
   })
 
   test("parses all the lines", function(done){
