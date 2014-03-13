@@ -80,15 +80,20 @@ logfmt.log({hello: 'world'})
 //=> app=logfmt hello=world
 ```
 
-### `logfmt.time([label], [data], [callback(logger)])`
-
-#### `logger.log([data], [stream])`
+### `logfmt.time([label], [data], [callback(logfmt)])`
 
 Log how long something takes.
 
 - `label`: optional name for the milliseconds key (defaults to `elapsed`)
 - `data`: optional extra data to include with every call to `logger.log`
-- `logger`: object passed to callback with a `log` function
+- `callback(logfmt)`: new logfmt object passed to callback
+
+If you don't pass in callback you get the logger returned.
+```javascript
+var logfmt2 = logfmt.time();
+logfmt2.log();
+//=> elapsed=1ms
+```
 
 No args defaults to `elapsed=<milliseconds>ms`
 
@@ -96,13 +101,6 @@ No args defaults to `elapsed=<milliseconds>ms`
 logfmt.time(function(logger){
   logger.log();
 })
-//=> elapsed=1ms
-```
-
-If you don't pass in callback you get the logger returned.
-```javascript
-var logger = logfmt.time();
-logger.log();
 //=> elapsed=1ms
 ```
 

@@ -1,4 +1,4 @@
-var logfmt = new require('../logfmt'),
+var logfmt = require('../logfmt'),
     assert = require('assert');
 
 var OutStream = require('./outstream');
@@ -26,6 +26,13 @@ suite('logfmt.time', function() {
     })
   })
 
+  test("logs the time with your label if no callback is provided", function(){
+    var logger = logfmt.time('time')
+    logger.log();
+    var actual = logfmt.stream.logline;
+    assert(/^time=\dms\n$/.test(actual), actual)
+  })
+
   test("logs the time with your label and persistent data", function(done){
     logfmt.time('time', {foo: 'bar'}, function(logger){
       logger.log();
@@ -42,7 +49,7 @@ suite('logfmt.time', function() {
       assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
       logger.log({moar: 'data'});
       var actual = logfmt.stream.logline;
-      assert(/^moar=data foo=bar elapsed=\d+ms\n$/.test(actual), actual)
+      assert(/^foo=bar moar=data elapsed=\d+ms\n$/.test(actual), actual)
       done();
     })
   })
@@ -94,12 +101,21 @@ suite('logfmt.time', function() {
     });
   })
 
-  test("returns a logger", function(){
+  test("returns a logfmt", function(){
     var logger1, logger2;
     logger1 = logfmt.time(function(logger){
       logger2 = logger;
     });
     assert.equal(logger1, logger2);
+  })
+
+  test('logger is a proper logfmt object', function(){
+    var logger1 = logfmt.time({foo: 'bar'});
+    var logfmt2 = new logfmt();
+
+    for(var prop in logfmt2){
+      assert(logger1[prop]);
+    }
   })
 
   // tests you can pass the logger into a closure

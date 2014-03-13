@@ -23,7 +23,7 @@ suite('new logfmt', function() {
   })
 
   test('constructor accepts a stream', function(){
-    stream = new OutStream;
+    var stream = new OutStream;
     var logfmt2 = new logfmt(stream);
     var data = {foo: 'bar', a: 14}
     logfmt2.log(data);
