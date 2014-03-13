@@ -21,7 +21,18 @@ if you're consuming them (especially if you're writing a logplex drain).
 
 ```javascript
 var logfmt = require('logfmt');
+
+logfmt.log({foo: "bar", a: 14, baz: 'hello kitty'})
+//=> foo=bar a=14 baz="hello kitty"
+
+logfmt.parse('foo=bar a=14 baz="hello kitty"')
+//=> { foo: "bar", a: 14, baz: 'hello kitty'}
 ```
+
+the logfmt function is a singleton that works directly from require.  however, you can use the `new` command
+to make another logfmt like this one.
+
+
 
 ## parser
 

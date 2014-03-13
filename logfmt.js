@@ -37,3 +37,4 @@ logfmt.prototype.requestLogger.commonFormatter = requestLogger.commonFormatter;
 
 _.extend(logfmt, logfmt.prototype);
 module.exports = logfmt;
+logfmt.call(module.exports)
