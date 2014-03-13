@@ -149,6 +149,17 @@ suite('logfmt.requestLogger', function(){
     done();
   })
 
+  test("commonFormatter uses correct path with express", function(){
+    var mockReq = {method: 'GET'}
+    mockReq.originalUrl = '/bar'
+    mockReq.ip = '1.0.0.1'
+    mockReq.header = function(h){ return 'foo' }
+    var mockRes = {statusCode: 200}
+    mockRes.get = function(){ return 'foo' }
+    var actual = logfmt.requestLogger.commonFormatter(mockReq, mockRes);
+    assert.equal('/bar', actual.path);
+  })
+
   test("commonFormatter uses correct path", function(){
     var mockReq = {method: 'GET'}
     mockReq.path = function(){ return '/bar' }
