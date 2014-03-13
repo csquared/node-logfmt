@@ -1,6 +1,7 @@
-var logfmt = require('../logfmt'),
+var logfmt = require('logfmt'),
     assert = require('assert');
 
+var logfmt = new logfmt();
 var OutStream = require('./outstream');
 
 suite('logfmt.time', function() {
@@ -59,9 +60,8 @@ suite('logfmt.time', function() {
 
   test('returns a logfmt', function(){
     var logger1 = logfmt.time();
-    var logfmt2 = new logfmt();
 
-    for(var prop in logfmt2){
+    for(var prop in logfmt){
       assert(logger1[prop]);
     }
   })

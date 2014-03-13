@@ -1,6 +1,9 @@
-var logfmt = require('../logfmt'),
+var logfmt = require('logfmt'),
     stream = require('stream'),
     assert = require('assert');
+
+//avoid test bleeding
+var logfmt = new logfmt;
 
 suite('logfmt.bodyParserStream', function() {
 

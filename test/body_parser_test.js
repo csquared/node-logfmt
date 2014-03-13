@@ -1,4 +1,4 @@
-var logfmt = require('../logfmt'),
+var logfmt = require('logfmt'),
     stream = require('stream'),
     assert = require('assert');
 
