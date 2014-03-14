@@ -1,4 +1,4 @@
-var logfmt = require('logfmt'),
+var logfmt = require('../logfmt'),
     assert = require('assert');
 
 var logfmt = new logfmt();

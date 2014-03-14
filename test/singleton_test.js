@@ -1,4 +1,4 @@
-var logfmt = require('logfmt'),
+var logfmt = require('../logfmt'),
     assert = require('assert');
 
 suite('logfmt singleton', function() {
