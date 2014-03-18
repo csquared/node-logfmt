@@ -7,8 +7,9 @@
 
 This library is for both converting lines in logfmt format to objects and
 for logging objects to a stream in logfmt format.
-It provides a logfmt parser, a logging facility,
-and both streaming and non-streaming body parsers for express.
+
+It provides a logfmt parser, logfmt stringifier, a logging facility,
+and both streaming and non-streaming body parsers for express and restify.
 
 You should use this library if you're trying to write structured logs or
 if you're consuming them (especially if you're writing a logplex drain).
@@ -19,13 +20,35 @@ if you're consuming them (especially if you're writing a logplex drain).
 
 # use
 
+The `logfmt` module is a singleton that works directly from require.
+
 ```javascript
 var logfmt = require('logfmt');
+
+logfmt.stringify({foo: 'bar'});
+// 'foo=bar'
+
+logfmt.parse('foo=bar');
+// {foo: 'bar'}
 ```
 
-The `logfmt` module is a singleton that works directly from require.
-Because it is also a function, you can use the idiom `new logfmt` to create
-a new `logfmt` object.
+It is also a constructor function, so you can use `new logfmt` to create
+a new `logfmt` object so you can configure it differently.
+
+```javascript
+var logfmt2 = new logfmt;
+
+// replace our stringify with JSON's
+logfmt2.stringify = JSON.stringify
+
+// now we log JSON!
+logfmt2.log({foo: 'bar'})
+// {"foo":"bar"}
+
+// and the original logfmt is untouched
+logfmt.log({foo: 'bar'})
+// foo=bar
+```
 
 ## stringify
 
@@ -34,7 +57,6 @@ Serialize an object to logfmt format
 ### `logfmt.stringify(object)`
 
 ```javascript
-var logfmt = require('logfmt');
 logfmt.stringify({foo: "bar", a: 14, baz: 'hello kitty'})
 //> 'foo=bar a=14 baz="hello kitty"'
 ```
@@ -46,8 +68,6 @@ Parse a line in logfmt format
 ### `logfmt.parse(string)`
 
 ```javascript
-var logfmt = require('logfmt');
-
 logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12")
 //> { "foo": "bar", "a": '14', "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
 ```
@@ -73,7 +93,6 @@ logfmt.log({foo: "bar", a: 14, baz: 'hello kitty'})
 Defaults to logging to `process.stdout`
 
 ```javascript
-var logfmt = require('logfmt');
 logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
