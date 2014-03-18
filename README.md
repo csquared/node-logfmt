@@ -116,6 +116,58 @@ We cannot arbitrarily convert numbers because that will drop precision for numbe
 
 ### Streaming
 
+### `logfmt.streamParser()`
+
+Creates a streaming parser that will automatically split and parse incoming lines and
+emit javascript objects.
+
+```javascript
+process.stdin
+  .pipe(logfmt.streamParser())
+```
+
+```javascript
+req.pipe(logfmt.streamParser())
+```
+
+#### Example
+
+
+Example command line of parsing logfmt and echoing JSON:
+
+```javascript
+var jsonOut = through(function(line){
+  this.queue(JSON.stringify(line))
+}, function(){
+  this.queue(null)
+})
+
+process.stdin
+  .pipe(logfmt.streamParser())
+  .pipe(jsonOut)
+  .pipe(process.stdout)
+```
+
+Example HTTP request parsing logfmt and echoing JSON:
+
+```
+server.post('/logs', function(req, res, next){
+
+  var jsonOut = through(function(line){
+    this.queue(JSON.stringify(line))
+  }, function(){
+    this.queue(null)
+  })
+
+  req.pipe(logfmt.streamParser())
+     .pipe(jsonOut)
+     .pipe(process.stdout);
+
+  return next();
+})
+```
+
+
 #### `logfmt.bodyParserStream([opts])`
 
 Valid Options:
