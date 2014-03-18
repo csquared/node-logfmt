@@ -22,6 +22,12 @@ suite('roundtrip', function(){
     assert.deepEqual(data, logfmt.parse(logfmt.stringify(data)))
   })
 
+  test("backslahes are restored", function(){
+    var data = {foo: 'why would you use \\LaTeX?'}
+    assert.deepEqual(data, logfmt.parse(logfmt.stringify(data)))
+  })
+
+
   test("escaped strings are restored", function(){
     var data = {foo: 'hello my "friend"'}
     assert.deepEqual(data, logfmt.parse(logfmt.stringify(data)))

@@ -29,6 +29,11 @@ suite('logfmt.stringify', function() {
     assert.equal('foo="hello my \\"friend\\" whom I \\"love\\""', logfmt.stringify(data))
   })
 
+  test("escapes backslahes within strings", function(){
+    var data = {foo: 'why would you use \\LaTeX?'}
+    assert.equal('foo="why would you use \\\\LaTeX?"', logfmt.stringify(data))
+  })
+
   test("undefined is nothing", function(){
     var data = {foo: undefined}
     assert.equal("foo=", logfmt.stringify(data))
