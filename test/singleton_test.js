@@ -15,8 +15,4 @@ suite('logfmt singleton', function() {
     var data = logfmt.stringify({foo: 'bar'});
     assert.equal('foo=bar', data);
   })
-
-  test('maxErrorLines is configured', function(){
-    assert.equal(10, logfmt.maxErrorLines);
-  })
 })

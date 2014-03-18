@@ -6,18 +6,11 @@ var logger           = require('./lib/logger');
 var requestLogger    = require('./lib/request_logger');
 var serializer       = require('./lib/stringify');
 
-function logfmt(stream, defaultData, timer) {
-  this.stream = stream || process.stdout;
-  this.defaultData = defaultData || {};
-  if(timer){
-    this.timerKey = timer.key;
-    this.timerNow = timer.now;
-  }
-  this.maxErrorLines = 10;
+//constructor
+function logfmt() {
 }
 
 //Build up logfmt prototype
-
 _.extend(logfmt.prototype, logger);
 
 logfmt.prototype.stringify = serializer.stringify;
@@ -45,4 +38,3 @@ logfmt.prototype.requestLogger.commonFormatter = requestLogger.commonFormatter;
 
 _.extend(logfmt, logfmt.prototype);
 module.exports = logfmt;
-logfmt.call(module.exports)
