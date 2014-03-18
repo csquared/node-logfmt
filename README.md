@@ -31,6 +31,8 @@ a new `logfmt` object.
 
 Serialize an object to logfmt format
 
+### `logfmt.stringify(object)`
+
 ```javascript
 var logfmt = require('logfmt');
 logfmt.stringify({foo: "bar", a: 14, baz: 'hello kitty'})
@@ -40,12 +42,6 @@ logfmt.stringify({foo: "bar", a: 14, baz: 'hello kitty'})
 ## parser
 
 Parse a line in logfmt format
-
-```javascript
-logfmt.parse('foo=bar a=14 baz="hello kitty"')
-//> { foo: "bar", a: 14, baz: 'hello kitty'}
-```
-
 
 ### `logfmt.parse(string)`
 
