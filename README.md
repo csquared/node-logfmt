@@ -66,8 +66,12 @@ accepts lines on STDIN and converts them to json
 
 accepts JSON on STDIN and converts them to logfmt
 
-    > echo '{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }' | logfmt -r
+    > echo '{ "foo": "bar", "a": 14, "baz": "hello kitty", \
+    "cool%story": "bro", "f": true, "%^asdf": true }' | logfmt -r
     foo=bar a=14 baz="hello kitty" cool%story=bro f=true %^asdf=true
+
+
+round trips for free!
 
     > echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt | logfmt -r | logfmt
     { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
