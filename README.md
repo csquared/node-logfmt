@@ -23,33 +23,29 @@ if you're consuming them (especially if you're writing a logplex drain).
 var logfmt = require('logfmt');
 ```
 
-Parse a line in logfmt format
-
-```javascript
-logfmt.parse('foo=bar a=14 baz="hello kitty"')
-//=> { foo: "bar", a: 14, baz: 'hello kitty'}
-```
-
-Serialize an object to logfmt format
-
-```javascript
-logfmt.serialize({foo: "bar", a: 14, baz: 'hello kitty'})
-//=> 'foo=bar a=14 baz="hello kitty"'
-```
-
-Log an object to `logfmt.stream` (defaults to STDOUT)
-
-```javascript
-logfmt.log({foo: "bar", a: 14, baz: 'hello kitty'})
-// foo=bar a=14 baz="hello kitty"
-//=> undefined
-```
-
 The `logfmt` module is a singleton that works directly from require.
 Because it is also a function, you can use the idiom `new logfmt` to create
 a new `logfmt` object.
 
+## stringify
+
+Serialize an object to logfmt format
+
+```javascript
+var logfmt = require('logfmt');
+logfmt.stringify({foo: "bar", a: 14, baz: 'hello kitty'})
+//> 'foo=bar a=14 baz="hello kitty"'
+```
+
 ## parser
+
+Parse a line in logfmt format
+
+```javascript
+logfmt.parse('foo=bar a=14 baz="hello kitty"')
+//> { foo: "bar", a: 14, baz: 'hello kitty'}
+```
+
 
 ### `logfmt.parse(string)`
 
@@ -57,7 +53,7 @@ a new `logfmt` object.
 var logfmt = require('logfmt');
 
 logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12")
-//=>{ "foo": "bar", "a": '14', "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
+//> { "foo": "bar", "a": '14', "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true, "code" : "H12" }
 ```
 
 The only conversions are from the strings `true` and `false` to their proper boolean counterparts.
@@ -66,7 +62,15 @@ We cannot arbitrarily convert numbers because that will drop precision for numbe
 
 ## logging
 
-Uses the `logfmt.serialize` function to write the result to `logfmt.stream`
+Log an object to `logfmt.stream` (defaults to STDOUT)
+
+Uses the `logfmt.stringify` function to write the result to `logfmt.stream`
+
+```javascript
+logfmt.log({foo: "bar", a: 14, baz: 'hello kitty'})
+//=> foo=bar a=14 baz="hello kitty"
+//> undefined
+```
 
 ### `logfmt.log(object, [stream])`
 
