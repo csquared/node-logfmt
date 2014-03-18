@@ -306,9 +306,9 @@ timer.log();
 //=> time=2ms foo=bar
 ```
 
-### logging errors
+### `logfmt.error(e)`
 
-`logfmt.error()` Accepts a Javascript `Error` object and converts it to logfmt format.
+Accepts a Javascript `Error` object and converts it to logfmt format.
 
 It will print up to `logfmt.maxErrorLines` lines.
 
