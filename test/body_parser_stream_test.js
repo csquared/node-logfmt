@@ -120,6 +120,7 @@ suite('logfmt.bodyParserStream', function() {
     mockReq.body.on('readable', function(){
       var data = mockReq.body.read();
       assert.deepEqual(data, matches.pop())
+      console.log(data);
       if(matches.length == 0) done();
     })
   })
