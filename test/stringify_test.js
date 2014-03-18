@@ -2,7 +2,6 @@ var logfmt = require('../logfmt'),
     assert = require('assert');
 
 suite('logfmt.stringify', function() {
-
   test("simple key value pairs", function(){
     var data = {foo: 'bar', a: 14}
     assert.equal("foo=bar a=14", logfmt.stringify(data))
@@ -30,30 +29,20 @@ suite('logfmt.stringify', function() {
     assert.equal('foo="hello my \\"friend\\" whom I \\"love\\""', logfmt.stringify(data))
   })
 
-  test("undefined is logged as nothing", function(){
+  test("undefined is nothing", function(){
     var data = {foo: undefined}
     assert.equal("foo=", logfmt.stringify(data))
   })
 
-  test("null is logged as nothing", function(){
+  test("null is nothing", function(){
     var data = {foo: null}
     assert.equal("foo=", logfmt.stringify(data))
   })
 
-  test("stringify object with properties", function(){
-    var data = {foo: 'bar'}
-    assert.equal('foo=bar', logfmt.stringify(data));
-  })
-
-  test("stringify object with inherited properties", function(){
+  test("object with inherited properties", function(){
     var defaults = {foo: 42, bar: "abc"}
     var options = Object.create(defaults)
     options.foo = 13
     assert.equal('foo=13 bar=abc', logfmt.stringify(options));
-  })
-
-  test("stringify true", function(){
-    var data = {foo: true}
-    assert.equal('foo=true', logfmt.stringify(data));
   })
 })
