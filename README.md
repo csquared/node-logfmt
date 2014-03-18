@@ -224,6 +224,24 @@ logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
 //=> foo=bar a=14 baz="hello kitty"
 ```
 
+#### customizing logging location
+
+`logfmt.log()` Accepts as 2nd argument anything that responds to `write(string)`
+```javascript
+var logfmt = require('logfmt');
+logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'}, process.stderr)
+//=> foo=bar a=14 baz="hello kitty"
+```
+
+Overwrite the default global location by setting `logfmt.stream`
+```javascript
+var logfmt = require('logfmt');
+logfmt.stream = process.stderr
+
+logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
+//=> foo=bar a=14 baz="hello kitty"
+```
+
 You can have multiple, isolated logfmts by using `new`.
 
 ```javascript
@@ -288,27 +306,12 @@ timer.log();
 //=> time=2ms foo=bar
 ```
 
-### customizing logging location
-
-`logfmt.log()` and `logger.log()` Accepts as 2nd argument anything that responds to `write(string)`
-```javascript
-var logfmt = require('logfmt');
-logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'}, process.stderr)
-//=> foo=bar a=14 baz="hello kitty"
-```
-
-Overwrite the default global location by setting `logfmt.stream`
-```javascript
-var logfmt = require('logfmt');
-logfmt.stream = process.stderr
-
-logfmt.log({ "foo": "bar", "a": 14, baz: 'hello kitty'})
-//=> foo=bar a=14 baz="hello kitty"
-```
-
 ### logging errors
 
-`logfmt.error()` Accepts a Javascript `Error` object and converts it to logfmt format
+`logfmt.error()` Accepts a Javascript `Error` object and converts it to logfmt format.
+
+It will print up to `logfmt.maxErrorLines` lines.
+
 ```javascript
 var logfmt = require('logfmt');
 logfmt.error(new Error('test error'));
