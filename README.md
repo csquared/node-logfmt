@@ -20,6 +20,8 @@ if you're consuming them (especially if you're writing a logplex drain).
 
 # use
 
+## node.js
+
 The `logfmt` module is a singleton that works directly from require.
 
 ```javascript
@@ -50,7 +52,30 @@ logfmt.log({foo: 'bar'})
 // foo=bar
 ```
 
-## stringify
+## command line
+
+### logfmt
+
+accepts lines on STDIN and converts them to json
+
+
+    > echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt
+    { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
+
+### logfmt -r (reverse)
+
+accepts JSON on STDIN and converts them to logfmt
+
+    > echo '{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }' | logfmt -r
+    foo=bar a=14 baz="hello kitty" cool%story=bro f=true %^asdf=true
+
+    > echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt | logfmt -r | logfmt
+    { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
+
+
+# API
+
+## stringifying
 
 Serialize an object to logfmt format
 
@@ -61,7 +86,7 @@ logfmt.stringify({foo: "bar", a: 14, baz: 'hello kitty'})
 //> 'foo=bar a=14 baz="hello kitty"'
 ```
 
-## parser
+## parsing
 
 Parse a line in logfmt format
 
@@ -75,6 +100,107 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 The only conversions are from the strings `true` and `false` to their proper boolean counterparts.
 
 We cannot arbitrarily convert numbers because that will drop precision for numbers that require more than 32 bits to represent them.
+
+## express/restify parsing middleware
+
+```javascript
+  // streaming
+  app.use(logfmt.bodyParserStream());
+  // buffering
+  app.use(logfmt.bodyParser());
+```
+
+### Streaming
+
+#### `logfmt.bodyParserStream([opts])`
+
+Valid Options:
+
+- `contentType`: defaults to `application/logplex-1`
+
+If you use the `logfmt.bodyParserStream()` for a body parser,
+you will have a `req.body` that is a readable stream.
+
+Pipes FTW:
+
+```javascript
+var app    = require('express')();
+var http   = require('http');
+var through = require('through');
+var logfmt  = require('logfmt');
+
+app.use(logfmt.bodyParserStream());
+
+app.post('/logs', function(req, res){
+  if(!req.body) return res.send('OK');
+
+  req.body.pipe(through(function(line){
+    console.dir(line);
+  }))
+
+  res.send('OK');
+})
+
+http.createServer(app).listen(3000);
+```
+
+Or you can just use the `readable` event:
+
+```javascript
+var app    = require('express')();
+var http   = require('http');
+var logfmt  = require('logfmt');
+
+app.use(logfmt.bodyParserStream());
+
+// req.body is now a Readable Stream
+app.post('/logs', function(req, res){
+  req.body.on('readable', function(){
+    var parsedLine = req.body.read();
+    if(parsedLine) console.log(parsedLine);
+    else res.send('OK');
+  })
+})
+
+http.createServer(app).listen(3000);
+```
+
+### Non-Streaming
+
+#### `logfmt.bodyParser([opts])`
+
+Valid Options:
+
+- `contentType`: defaults to `application/logplex-1`
+
+If you use the `logfmt.bodyParser()` for a body parser,
+you will have a `req.body` that is an array of objects.
+
+```javascript
+var logfmt   = require('logfmt');
+
+app.use(logfmt.bodyParser());
+
+// req.body is now an array of objects
+app.post('/logs', function(req, res){
+
+  console.log('BODY: ' + JSON.stringify(req.body));
+
+  req.body.forEach(function(data){
+    console.log(data);
+  });
+
+  res.send('OK');
+})
+
+http.createServer(app).listen(3000);
+```
+
+test it:
+
+```bash
+curl -X POST --header 'Content-Type: application/logplex-1' -d "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" http://localhost:3000/logs
+```
 
 ## logging
 
@@ -254,124 +380,3 @@ app.use(logfmt.requestLogger(function(req, res){
 }));
 //=> ip=127.0.0.1 time=2013-08-05T20:50:19.216Z foo=bar elapsed=4ms
 ```
-
-## express/restify parsing middleware
-
-```javascript
-  // streaming
-  app.use(logfmt.bodyParserStream());
-  // buffering
-  app.use(logfmt.bodyParser());
-```
-
-### Streaming
-
-#### `logfmt.bodyParserStream([opts])`
-
-Valid Options:
-
-- `contentType`: defaults to `application/logplex-1`
-
-If you use the `logfmt.bodyParserStream()` for a body parser,
-you will have a `req.body` that is a readable stream.
-
-Pipes FTW:
-
-```javascript
-var app    = require('express')();
-var http   = require('http');
-var through = require('through');
-var logfmt  = require('logfmt');
-
-app.use(logfmt.bodyParserStream());
-
-app.post('/logs', function(req, res){
-  if(!req.body) return res.send('OK');
-
-  req.body.pipe(through(function(line){
-    console.dir(line);
-  }))
-
-  res.send('OK');
-})
-
-http.createServer(app).listen(3000);
-```
-
-Or you can just use the `readable` event:
-
-```javascript
-var app    = require('express')();
-var http   = require('http');
-var logfmt  = require('logfmt');
-
-app.use(logfmt.bodyParserStream());
-
-// req.body is now a Readable Stream
-app.post('/logs', function(req, res){
-  req.body.on('readable', function(){
-    var parsedLine = req.body.read();
-    if(parsedLine) console.log(parsedLine);
-    else res.send('OK');
-  })
-})
-
-http.createServer(app).listen(3000);
-```
-
-### Non-Streaming
-
-#### `logfmt.bodyParser([opts])`
-
-Valid Options:
-
-- `contentType`: defaults to `application/logplex-1`
-
-If you use the `logfmt.bodyParser()` for a body parser,
-you will have a `req.body` that is an array of objects.
-
-```javascript
-var logfmt   = require('logfmt');
-
-app.use(logfmt.bodyParser());
-
-// req.body is now an array of objects
-app.post('/logs', function(req, res){
-
-  console.log('BODY: ' + JSON.stringify(req.body));
-
-  req.body.forEach(function(data){
-    console.log(data);
-  });
-
-  res.send('OK');
-})
-
-http.createServer(app).listen(3000);
-```
-
-test it:
-
-```bash
-curl -X POST --header 'Content-Type: application/logplex-1' -d "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" http://localhost:3000/logs
-```
-
-## command line
-
-### logfmt
-
-accepts lines on STDIN and converts them to json
-
-
-    > echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt
-    { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
-
-### logfmt -r (reverse)
-
-accepts JSON on STDIN and converts them to logfmt
-
-    > echo '{ "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }' | logfmt -r
-    foo=bar a=14 baz="hello kitty" cool%story=bro f=true %^asdf=true
-
-    > echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt | logfmt -r | logfmt
-    { "foo": "bar", "a": 14, "baz": "hello kitty", "cool%story": "bro", "f": true, "%^asdf": true }
