@@ -4,7 +4,7 @@ var bodyParserStream = require('./lib/body_parser_stream');
 var logfmtParser     = require('./lib/logfmt_parser');
 var logger           = require('./lib/logger');
 var requestLogger    = require('./lib/request_logger');
-var serializer       = require('./lib/serializer');
+var serializer       = require('./lib/stringify');
 
 function logfmt(stream, defaultData, timer) {
   this.stream = stream || process.stdout;
@@ -16,9 +16,11 @@ function logfmt(stream, defaultData, timer) {
   this.maxErrorLines = 10;
 }
 
+//Build up logfmt prototype
+
 _.extend(logfmt.prototype, logger);
 
-logfmt.prototype.serialize = serializer.serialize;
+logfmt.prototype.stringify = serializer.stringify;
 logfmt.prototype.parse = logfmtParser.parse;
 
 // Synchronous body parser

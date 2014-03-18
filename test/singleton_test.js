@@ -11,8 +11,8 @@ suite('logfmt singleton', function() {
     assert.equal('bar', data.foo);
   })
 
-  test('serializes', function(){
-    var data = logfmt.serialize({foo: 'bar'});
+  test('stringifies', function(){
+    var data = logfmt.stringify({foo: 'bar'});
     assert.equal('foo=bar', data);
   })
 
