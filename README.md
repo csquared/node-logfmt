@@ -187,13 +187,10 @@ app.use(logfmt.bodyParser());
 
 // req.body is now an array of objects
 app.post('/logs', function(req, res){
-
   console.log('BODY: ' + JSON.stringify(req.body));
-
   req.body.forEach(function(data){
     console.log(data);
   });
-
   res.send('OK');
 })
 
