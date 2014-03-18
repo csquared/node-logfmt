@@ -21,18 +21,33 @@ if you're consuming them (especially if you're writing a logplex drain).
 
 ```javascript
 var logfmt = require('logfmt');
+```
 
-logfmt.log({foo: "bar", a: 14, baz: 'hello kitty'})
-//=> foo=bar a=14 baz="hello kitty"
+Parse a line in logfmt format
 
+```javascript
 logfmt.parse('foo=bar a=14 baz="hello kitty"')
 //=> { foo: "bar", a: 14, baz: 'hello kitty'}
 ```
 
-the logfmt function is a singleton that works directly from require.  however, you can use the `new` command
-to make another logfmt like this one.
+Serialize an object to logfmt format
 
+```javascript
+logfmt.serialize({foo: "bar", a: 14, baz: 'hello kitty'})
+//=> 'foo=bar a=14 baz="hello kitty"'
+```
 
+Log an object to `logfmt.stream` (defaults to STDOUT)
+
+```javascript
+logfmt.log({foo: "bar", a: 14, baz: 'hello kitty'})
+// foo=bar a=14 baz="hello kitty"
+//=> undefined
+```
+
+The `logfmt` module is a singleton that works directly from require.
+Because it is also a function, you can use the idiom `new logfmt` to create
+a new `logfmt` object.
 
 ## parser
 
@@ -46,9 +61,12 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 ```
 
 The only conversions are from the strings `true` and `false` to their proper boolean counterparts.
-We cannot arbitrarily convert numbers because we will drop precision for numbers that require more than 32 bits to represent them.
+
+We cannot arbitrarily convert numbers because that will drop precision for numbers that require more than 32 bits to represent them.
 
 ## logging
+
+Uses the `logfmt.serialize` function to write the result to `logfmt.stream`
 
 ### `logfmt.log(object, [stream])`
 
