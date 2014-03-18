@@ -1,6 +1,9 @@
 var logfmt = require('../logfmt'),
     assert = require('assert');
 
+//avoid test bleeding
+var logfmt = new logfmt;
+
 var OutStream = require('./outstream');
 
 suite('logfmt.requestLogger', function(){
@@ -14,6 +17,7 @@ suite('logfmt.requestLogger', function(){
     mockRes.end = function(data, encoding){}
     var next = function(){
       assert.equal('', logfmt.stream.logline);
+      done();
     };
 
     var logger = logfmt.requestLogger(function(req,res){
@@ -27,7 +31,6 @@ suite('logfmt.requestLogger', function(){
     var expectation = /method=GET status=200 elapsed=\dms\n/
     var actual = logfmt.stream.logline;
     assert(expectation.test(actual), actual);
-    done();
   })
 
   test("immediate option logs before next()", function(done){
@@ -35,6 +38,7 @@ suite('logfmt.requestLogger', function(){
     var mockRes = {statusCode: 200}
     var next = function(){
       assert.equal('method=GET status=200\n', logfmt.stream.logline);
+      done()
     };
 
     var logger = logfmt.requestLogger({immediate: true}, function(req,res){
@@ -44,7 +48,6 @@ suite('logfmt.requestLogger', function(){
       }
     });
     logger(mockReq, mockRes, next)
-    done()
   })
 
   test("can just send options", function(done){
@@ -61,11 +64,11 @@ suite('logfmt.requestLogger', function(){
       assert.equal('foo', actual.ip);
       assert.equal('foo', actual.content_type);
       assert.equal('foo', actual.content_length);
+      done()
     };
 
     var logger = logfmt.requestLogger({immediate: true})
     logger(mockReq, mockRes, next)
-    done()
   })
 
   test("elapsed option renames elapsed key", function(done){
@@ -74,6 +77,7 @@ suite('logfmt.requestLogger', function(){
     mockRes.end = function(data, encoding){}
     var next = function(){
       assert.equal('', logfmt.stream.logline);
+      done()
     };
 
     var logger = logfmt.requestLogger({elapsed: 'time'}, function(req,res){
@@ -87,7 +91,6 @@ suite('logfmt.requestLogger', function(){
     var expectation = /method=GET status=200 time=\dms\n/
     var actual = logfmt.stream.logline;
     assert(expectation.test(actual), actual);
-    done()
   })
 
   test("empty defaults to commonLogger", function(done){
@@ -205,11 +208,10 @@ suite('logfmt.requestLogger', function(){
     var next = function(){
       var actual = logfmt.parse(logfmt.stream.logline);
       assert.equal('namespacetest', actual.ns);
+      done()
     };
 
     var logger = logfmt.namespace({ns:'namespacetest'}).requestLogger({immediate: true})
     logger(mockReq, mockRes, next)
-    done()
   })
-
 })

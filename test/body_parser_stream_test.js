@@ -2,6 +2,9 @@ var logfmt = require('../logfmt'),
     stream = require('stream'),
     assert = require('assert');
 
+//avoid test bleeding
+var logfmt = new logfmt;
+
 suite('logfmt.bodyParserStream', function() {
 
   test("skips parsing when req._body is true", function(){

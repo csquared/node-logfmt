@@ -1,6 +1,7 @@
 var logfmt = require('../logfmt'),
     assert = require('assert');
 
+var logfmt = new logfmt();
 var OutStream = require('./outstream');
 
 suite('logfmt.time', function() {
@@ -8,112 +9,59 @@ suite('logfmt.time', function() {
     logfmt.stream = new OutStream;
   })
 
-  test("logs the time", function(done){
-    logfmt.time(function(logger){
-      logger.log();
-      var actual = logfmt.stream.logline;
-      assert(/^elapsed=\dms\n$/.test(actual), actual)
-      done();
-    })
+  test("logs the time as elapsed", function(){
+    var logger = logfmt.time();
+    logger.log();
+    var actual = logfmt.stream.logline;
+    assert(/^elapsed=\dms\n$/.test(actual), actual)
   })
 
-  test("logs the time with your label", function(done){
-    logfmt.time('time', function(logger){
-      logger.log();
-      var actual = logfmt.stream.logline;
-      assert(/^time=\dms\n$/.test(actual), actual)
-      done();
-    })
-  })
-
-  test("logs the time with your label if no callback is provided", function(){
-    var logger = logfmt.time('time')
+  test("logs the time with your label", function(){
+    var logger = logfmt.time('time');
     logger.log();
     var actual = logfmt.stream.logline;
     assert(/^time=\dms\n$/.test(actual), actual)
   })
 
-  test("logs the time with your label and persistent data", function(done){
-    logfmt.time('time', {foo: 'bar'}, function(logger){
-      logger.log();
-      var actual = logfmt.stream.logline;
-      assert(/^foo=bar time=\dms\n$/.test(actual), actual)
-      done();
-    })
+  test("logs the time with your data", function(){
+    var logger = logfmt.time('time1').namespace({foo: 'bar'});
+    logger.log({foo: 'bar'});
+    var actual = logfmt.stream.logline;
+    assert(/^foo=bar time1=\d+ms\n$/.test(actual), actual)
   })
 
-  test("logs the time with persistent data", function(done){
-    logfmt.time({foo: 'bar'}, function(logger){
-      logger.log();
-      var actual = logfmt.stream.logline;
-      assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
-      logger.log({moar: 'data'});
-      var actual = logfmt.stream.logline;
-      assert(/^foo=bar moar=data elapsed=\d+ms\n$/.test(actual), actual)
-      done();
-    })
+  test("logs the time with your label and your data", function(){
+    var logger = logfmt.time('time').namespace({foo: 'bar'})
+    logger.log();
+    var actual = logfmt.stream.logline;
+    assert(/^foo=bar time=\dms\n$/.test(actual), actual)
   })
 
   //now we're using setTimeout to ensure the elapsed
   //time reflects a known delay
   test("accurancy in milliseconds", function(done){
-    logfmt.time(function(logger){
-      var wrapped = function() {
-        logger.log();
-        var actual = logfmt.stream.logline;
-        assert(/^elapsed=2\dms\n$/.test(actual), actual)
-        done();
-      }
-      setTimeout(wrapped, 20);
-    })
-  })
-
-  test("logs the time with your label and data", function(done){
-    logfmt.time('time', function(logger){
-      logger.log({foo: 'bar'});
+    var logger = logfmt.time();
+    var wrapped = function() {
+      logger.log();
       var actual = logfmt.stream.logline;
-      assert(/^foo=bar time=\d+ms\n$/.test(actual), actual)
+      assert(/^elapsed=2\dms\n$/.test(actual), actual)
       done();
-    })
+    }
+    setTimeout(wrapped, 20);
   })
 
-  test("supports log(data, stream) interface", function(done){
+  test("supports log(data, stream) interface", function(){
     var mock_sink = new OutStream;
-    logfmt.time(function(logger){
-      logger.log({foo: 'bar'}, mock_sink);
-      var actual = mock_sink.logline;
-      assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
-      done();
-    })
+    var logger = logfmt.time()
+    logger.log({foo: 'bar'}, mock_sink);
+    var actual = mock_sink.logline;
+    assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
   })
 
-  test("calls the callback if provided", function(){
-    var test;
-    logfmt.time(function(logger){
-      test = true;
-    });
-    assert(test);
-  })
+  test('returns a logfmt', function(){
+    var logger1 = logfmt.time();
 
-  test("does not call the callback if not provided", function(){
-    assert.doesNotThrow(function(){
-      logfmt.time();
-    });
-  })
-
-  test("returns a logfmt", function(){
-    var logger1, logger2;
-    logger1 = logfmt.time(function(logger){
-      logger2 = logger;
-    });
-    assert.equal(logger1, logger2);
-  })
-
-  test('logger is a proper logfmt object', function(){
-    var logger1 = logfmt.time({foo: 'bar'});
-    var logfmt2 = new logfmt();
-
-    for(var prop in logfmt2){
+    for(var prop in logfmt){
       assert(logger1[prop]);
     }
   })
@@ -123,17 +71,16 @@ suite('logfmt.time', function() {
   // uses setTimeout to ensure the timing happens in 20ms
   test("can log twice", function(done){
     var mock_sink = new OutStream;
-    logfmt.time(function(logger){
-      logger.log({foo: 'bar'}, mock_sink);
+    var logger = logfmt.time()
+    logger.log({foo: 'bar'}, mock_sink);
+    var actual = mock_sink.logline;
+    assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
+    var wrapped = function() {
+      logger.log({bar: 'foo'}, mock_sink);
       var actual = mock_sink.logline;
-      assert(/^foo=bar elapsed=\d+ms\n$/.test(actual), actual)
-      var wrapped = function() {
-        logger.log({bar: 'foo'}, mock_sink);
-        var actual = mock_sink.logline;
-        assert(/^bar=foo elapsed=2\d+ms\n$/.test(actual), actual)
-        done();
-      }
-      setTimeout(wrapped, 20);
-    })
+      assert(/^bar=foo elapsed=2\d+ms\n$/.test(actual), actual)
+      done();
+    }
+    setTimeout(wrapped, 20);
   })
 })

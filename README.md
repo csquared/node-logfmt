@@ -21,18 +21,33 @@ if you're consuming them (especially if you're writing a logplex drain).
 
 ```javascript
 var logfmt = require('logfmt');
+```
 
-logfmt.log({foo: "bar", a: 14, baz: 'hello kitty'})
-//=> foo=bar a=14 baz="hello kitty"
+Parse a line in logfmt format
 
+```javascript
 logfmt.parse('foo=bar a=14 baz="hello kitty"')
 //=> { foo: "bar", a: 14, baz: 'hello kitty'}
 ```
 
-the logfmt function is a singleton that works directly from require.  however, you can use the `new` command
-to make another logfmt like this one.
+Serialize an object to logfmt format
 
+```javascript
+logfmt.serialize({foo: "bar", a: 14, baz: 'hello kitty'})
+//=> 'foo=bar a=14 baz="hello kitty"'
+```
 
+Log an object to `logfmt.stream` (defaults to STDOUT)
+
+```javascript
+logfmt.log({foo: "bar", a: 14, baz: 'hello kitty'})
+// foo=bar a=14 baz="hello kitty"
+//=> undefined
+```
+
+The `logfmt` module is a singleton that works directly from require.
+Because it is also a function, you can use the idiom `new logfmt` to create
+a new `logfmt` object.
 
 ## parser
 
@@ -46,9 +61,12 @@ logfmt.parse("foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf code=H12"
 ```
 
 The only conversions are from the strings `true` and `false` to their proper boolean counterparts.
-We cannot arbitrarily convert numbers because we will drop precision for numbers that require more than 32 bits to represent them.
+
+We cannot arbitrarily convert numbers because that will drop precision for numbers that require more than 32 bits to represent them.
 
 ## logging
+
+Uses the `logfmt.serialize` function to write the result to `logfmt.stream`
 
 ### `logfmt.log(object, [stream])`
 
@@ -91,80 +109,37 @@ logfmt.log({hello: 'world'})
 //=> app=logfmt hello=world
 ```
 
-### `logfmt.time([label], [data], [callback(logfmt)])`
+### `logfmt.time([label])`
 
 Log how long something takes.
+Returns a new `logfmt` with elapsed milliseconds included in every `log` call.
 
-- `label`: optional name for the milliseconds key (defaults to `elapsed`)
-- `data`: optional extra data to include with every call to `logger.log`
-- `callback(logfmt)`: new logfmt object passed to callback
-
-If you don't pass in callback you get the logger returned.
-```javascript
-var logfmt2 = logfmt.time();
-logfmt2.log();
-//=> elapsed=1ms
-```
-
-No args defaults to `elapsed=<milliseconds>ms`
+- `label`: optional name for the milliseconds key. defaults to: `elapsed=<milliseconds>ms`
 
 ```javascript
-logfmt.time(function(logger){
-  logger.log();
-})
+var timer = logfmt.time();
+timer.log();
 //=> elapsed=1ms
 ```
 
 String `label` changes the key to `<string>=<milliseconds>ms`
 
 ```javascript
-logfmt.time('time', function(logger){
-  logger.log();
-  logger.log();
-})
+var timer = logfmt.time('time');
+timer.log();
 //=> time=1ms
+timer.log();
 //=> time=2ms
 ```
 
-Data can be passed to `logger.log`
+If you'd like to include data, just chain a call to namespace.
 
 ```javascript
-logfmt.time(function(logger){
-  logger.log({foo: 'bar'});
-})
-//=> foo=bar elapsed=1ms
-```
-
-Data can also be passed to `logfmt.time` and will persist
-across calls to `logger.log`
-
-```javascript
-logfmt.time('thing', {foo: 'bar'}, function(logger){
-  logger.log({at: 'function.start'});
-  logger.log({at: 'function.end'});
-})
-//=> at=function.start foo=bar thing=1ms
-//=> at=function.end foo=bar thing=2ms
-```
-
-You do not need a `label` to pass data to `logfmt.time`
-
-```javascript
-logfmt.time({foo: 'bar'}, function(logger){
-  logger.log({at: 'function'});
-})
-//=> at=function foo=bar elapsed=1ms
-```
-
-`time` works with `namespace` as expected
-
-```javascript
-var logfmt = require('logfmt').namespace({app: 'logfmt'})
-
-logfmt.time({foo: 'bar'}, function(logger){
-  logger.log({at: 'function'});
-})
-//=> app=logfmt at=function foo=bar elapsed=1ms
+var timer = logfmt.time('time').namespace({foo: 'bar'});
+timer.log();
+//=> time=1ms foo=bar
+timer.log();
+//=> time=2ms foo=bar
 ```
 
 ### customizing logging location

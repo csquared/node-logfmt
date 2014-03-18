@@ -1,6 +1,7 @@
 var logfmt = require('../logfmt'),
     assert = require('assert');
 
+var logfmt = new logfmt;
 var OutStream = require('./outstream');
 
 suite('logfmt.error', function() {
