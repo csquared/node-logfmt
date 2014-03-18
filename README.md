@@ -306,7 +306,7 @@ timer.log();
 //=> time=2ms foo=bar
 ```
 
-### `logfmt.error(e)`
+### `logfmt.error(error)`
 
 Accepts a Javascript `Error` object and converts it to logfmt format.
 
