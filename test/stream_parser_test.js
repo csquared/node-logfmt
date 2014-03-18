@@ -22,4 +22,32 @@ suite('logfmt.streamParser', function() {
       done()
     }))
   })
+
+  // is this the desired behavior?
+  test("handles empty data", function(done){
+    var s = new stream.Readable;
+    s._read = function(){};
+    s.push('');
+    s.push(null);
+
+    s.pipe(logfmt.streamParser()).pipe(through(function(data){
+      assert.deepEqual({}, data);
+    },function(){
+      done()
+    }))
+  })
+
+  // is this the desired behavior?
+  test("handles empty lines", function(done){
+    var s = new stream.Readable;
+    s._read = function(){};
+    s.push("   \n");
+    s.push(null);
+
+    s.pipe(logfmt.streamParser()).pipe(through(function(data){
+      assert.deepEqual({}, data);
+    },function(){
+      done()
+    }))
+  })
 })
