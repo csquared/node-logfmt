@@ -1,4 +1,5 @@
 var logfmt = require('../logfmt'),
+    through = require('through'),
     stream = require('stream'),
     assert = require('assert');
 
@@ -117,11 +118,12 @@ suite('logfmt.bodyParserStream', function() {
     parser(mockReq, null, next)
 
     var matches = [{path: '/'}, {foo: 'bar'}, {hello: 'kitty'}];
-    mockReq.body.on('readable', function(){
-      var data = mockReq.body.read();
+
+    mockReq.body.pipe(through(function(data){
       assert.deepEqual(data, matches.pop())
-      if(matches.length == 0) done();
-    })
+    },function(){
+      done()
+    }))
   })
 
 })
