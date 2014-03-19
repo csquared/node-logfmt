@@ -4,7 +4,7 @@ function logfmt() {
 module.exports = logfmt;
 
 var _                = require('lodash');
-var streamParser     = require('./lib/stream_parser');
+var streaming        = require('./lib/streaming');
 var bodyParser       = require('./lib/body_parser');
 var bodyParserStream = require('./lib/body_parser_stream');
 var logfmtParser     = require('./lib/logfmt_parser');
@@ -14,10 +14,10 @@ var serializer       = require('./lib/stringify');
 
 //Build up logfmt prototype
 _.extend(logfmt.prototype, logger);
+_.extend(logfmt.prototype, streaming);
 
 logfmt.prototype.stringify = serializer.stringify;
 logfmt.prototype.parse = logfmtParser.parse;
-logfmt.prototype.streamParser = streamParser.streamParser;
 
 // Synchronous body parser
 logfmt.prototype.bodyParser = function(options) {

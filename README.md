@@ -70,7 +70,6 @@ accepts JSON on STDIN and converts them to logfmt
     "cool%story": "bro", "f": true, "%^asdf": true }' | logfmt -r
     foo=bar a=14 baz="hello kitty" cool%story=bro f=true %^asdf=true
 
-
 round trips for free!
 
     > echo "foo=bar a=14 baz=\"hello kitty\" cool%story=bro f %^asdf" | logfmt | logfmt -r | logfmt
@@ -84,6 +83,8 @@ round trips for free!
 Serialize an object to logfmt format
 
 ### `logfmt.stringify(object)`
+
+Serializes a single object.
 
 ```javascript
 logfmt.stringify({foo: "bar", a: 14, baz: 'hello kitty'})
@@ -105,16 +106,28 @@ The only conversions are from the strings `true` and `false` to their proper boo
 
 We cannot arbitrarily convert numbers because that will drop precision for numbers that require more than 32 bits to represent them.
 
-## express/restify parsing middleware
+
+## Streaming
+
+### `logfmt.streamStringify([options])`
+
+Pipe objects into the stream and it will write logfmt.
+You can customize the delimiter via the `options` object, which
+defaults to `\n` (newlines).
 
 ```javascript
-  // streaming
-  app.use(logfmt.bodyParserStream());
-  // buffering
-  app.use(logfmt.bodyParser());
+  var parseJSON = function(line) {
+    if(!line) return;
+    this.queue(JSON.parse(line.trim()))
+  }
+
+  process.stdin
+    .pipe(split())
+    .pipe(through(parseJSON))
+    .pipe(logfmt.streamStringify())
+    .pipe(process.stdout)
 ```
 
-### Streaming
 
 ### `logfmt.streamParser()`
 
@@ -167,6 +180,14 @@ server.post('/logs', function(req, res, next){
 })
 ```
 
+## express/restify parsing middleware
+
+```javascript
+  // streaming
+  app.use(logfmt.bodyParserStream());
+  // buffering
+  app.use(logfmt.bodyParser());
+```
 
 #### `logfmt.bodyParserStream([opts])`
 
