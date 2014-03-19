@@ -35,7 +35,7 @@ logfmt.parse('foo=bar');
 ```
 
 It is also a constructor function, so you can use `new logfmt` to create
-a new `logfmt` object so you can configure it differently.
+a new `logfmt` that you can configure differently.
 
 ```javascript
 var logfmt2 = new logfmt;
