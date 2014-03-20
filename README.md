@@ -16,7 +16,7 @@ if you're consuming them (especially if you're writing a logplex drain).
 
 ## install
 
-    npm install logfmt
+    npm install logfmt@1.0.0-pre3
 
 # use
 
