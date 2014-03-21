@@ -109,6 +109,19 @@ We cannot arbitrarily convert numbers because that will drop precision for numbe
 
 ## Streaming
 
+### `logfmt.streamParser()`
+
+Creates a streaming parser that will automatically split and parse incoming lines and
+emit javascript objects.
+
+```javascript
+process.stdin.pipe(logfmt.streamParser())
+```
+
+```javascript
+req.pipe(logfmt.streamParser())
+```
+
 ### `logfmt.streamStringify([options])`
 
 Pipe objects into the stream and it will write logfmt.
@@ -129,19 +142,6 @@ defaults to `\n` (newlines).
 ```
 
 
-### `logfmt.streamParser()`
-
-Creates a streaming parser that will automatically split and parse incoming lines and
-emit javascript objects.
-
-```javascript
-process.stdin
-  .pipe(logfmt.streamParser())
-```
-
-```javascript
-req.pipe(logfmt.streamParser())
-```
 
 #### Example
 
