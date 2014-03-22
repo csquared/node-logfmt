@@ -109,14 +109,20 @@ We cannot arbitrarily convert numbers because that will drop precision for numbe
 
 ## Streaming
 
+Put this in your pipe and smoke it.
+
 ### `logfmt.streamParser()`
 
 Creates a streaming parser that will automatically split and parse incoming lines and
 emit javascript objects.
 
+Stream in from STDIN
+
 ```javascript
 process.stdin.pipe(logfmt.streamParser())
 ```
+
+Or pipe from an HTTP request
 
 ```javascript
 req.pipe(logfmt.streamParser())
