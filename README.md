@@ -152,38 +152,35 @@ defaults to `\n` (newlines).
 #### Example
 
 
-Example command line of parsing logfmt and echoing JSON:
+Example command line of parsing logfmt and echoing objects to STDOUT:
 
 ```javascript
-var jsonOut = through(function(line){
-  this.queue(JSON.stringify(line))
-}, function(){
-  this.queue(null)
-})
+var logfmt  = require('logfmt');
+var through = require('through');
 
 process.stdin
   .pipe(logfmt.streamParser())
-  .pipe(jsonOut)
-  .pipe(process.stdout)
+  .pipe(through(function(object){
+    console.log(object);
+  }))
 ```
 
-Example HTTP request parsing logfmt and echoing JSON:
+Example HTTP request parsing logfmt and echoing objects to STDOUT:
 
-```
-server.post('/logs', function(req, res, next){
+```javascript
+var http    = require('http');
+var logfmt  = require('logfmt');
+var through = require('through');
 
-  var jsonOut = through(function(line){
-    this.queue(JSON.stringify(line))
-  }, function(){
-    this.queue(null)
-  })
-
+http.createServer(function (req, res) {
   req.pipe(logfmt.streamParser())
-     .pipe(jsonOut)
-     .pipe(process.stdout);
+     .pipe(through(function(object){
+       console.log(object);
+     }))
 
-  return next();
-})
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('OK');
+}).listen(3000);
 ```
 
 ## express/restify parsing middleware
