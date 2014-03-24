@@ -147,8 +147,6 @@ defaults to `\n` (newlines).
     .pipe(process.stdout)
 ```
 
-
-
 #### Example
 
 
@@ -460,3 +458,15 @@ app.use(logfmt.requestLogger(function(req, res){
 }));
 //=> ip=127.0.0.1 time=2013-08-05T20:50:19.216Z foo=bar elapsed=4ms
 ```
+
+# Development
+
+Pull Requests welcome.
+
+## Tests
+
+    > npm test
+
+# License
+
+MIT
