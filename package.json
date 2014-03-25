@@ -1,6 +1,6 @@
 {
   "name": "logfmt",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "key=value logger and parser",
   "main": "logfmt.js",
   "scripts": {
