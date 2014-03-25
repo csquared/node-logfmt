@@ -66,6 +66,30 @@ suite('logfmt.time', function() {
     }
   })
 
+  test('can nest multiple timers', function(){
+
+    var logger  = logfmt.time('foo');
+    var logger2 = logger.time('foo2');
+    var logger3 = logger2.time('foo3');
+
+    var mock_sink = new OutStream;
+
+    logger2.log({}, mock_sink);
+    var recovered = logfmt.parse(mock_sink.logline);
+    console.log(recovered);
+    assert(/^\d+ms/.test(recovered.foo));
+    assert(/^\d+ms/.test(recovered.foo2));
+    assert(recovered.foo3 === undefined);
+
+    var mock_sink2 = new OutStream;
+    logger3.log({}, mock_sink2);
+    var recovered = logfmt.parse(mock_sink2.logline);
+    console.log(recovered);
+    assert(/^\d+ms/.test(recovered.foo));
+    assert(/^\d+ms/.test(recovered.foo2));
+    assert(/^\d+ms/.test(recovered.foo3));
+  })
+
   // tests you can pass the logger into a closure
   // and call `log` multiple times.
   // uses setTimeout to ensure the timing happens in 20ms

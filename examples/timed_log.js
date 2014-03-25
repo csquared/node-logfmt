@@ -1,16 +1,19 @@
 var logfmt = require('../logfmt');
 
-logfmt.time('thing', function(logger){
-  logger.log({foo: 'bar'})
-  var this_thing = function(){
-    logger.log({at: "thing"})
+var logger = logfmt.time('thing')
+logger.log({foo: 'bar'})
+
+var this_thing = function(){
+  logfmt.log({at: "logfmt log"})
+  logger.log({at: "thing"})
+
+  var inner_logger = logger.time()
+
+  var inner_thing = function(){
     logfmt.log({at: "logfmt log"})
-    logfmt.time(function(inner_logger){
-      var inner_thing = function(){
-        inner_logger.log({at: 'inner thing'});
-      }
-      setTimeout(inner_thing, 100);
-    })
+    logger.log({at: "thing"})
+    inner_logger.log({at: 'inner thing'});
   }
-  setTimeout(this_thing, 300);
-})
+  setTimeout(inner_thing, 100);
+}
+setTimeout(this_thing, 300);
