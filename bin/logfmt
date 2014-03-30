@@ -1,34 +1,47 @@
 #! /usr/bin/env node
+"use strict";
 
-var split = require('split')
-var through = require('through')
-var logfmt = require('../logfmt')
+var split = require('split');
+var through = require('through');
+var logfmt = require('../logfmt');
 process.stdin.setEncoding('utf8');
 
 var argv = process.argv.slice(2);
-
-if(argv[0] == '-r'){
-  //reverse -- convert json to logfmt logs
-  var parseJSON = function(line) {
-    if(!line) return;
-    this.queue(JSON.parse(line.trim()))
-  }
-
-  process.stdin
-    .pipe(split())
-    .pipe(through(parseJSON))
-    .pipe(logfmt.streamStringify())
-    .pipe(process.stdout)
-
-} else {
-
-  var toJSON = through(function(obj){
-    this.queue(JSON.stringify(obj) + "\n")
-  })
-
+var isPretty = null;
+var stream = function () {
+  var toJSON = through(function (obj) {
+    this.queue(JSON.stringify(obj, null, isPretty) + "\n")
+  });
   process.stdin
     .pipe(logfmt.streamParser())
     .pipe(toJSON)
-    .pipe(process.stdout)
+    .pipe(process.stdout);
+};
+
+
+while (argv.length) {
+  var arg = argv.pop();
+  switch (arg) {
+    case '-b':
+      isPretty = 4;
+      break;
+
+
+    case '-r':
+      //reverse -- convert json to logfmt logs
+      stream = function () {
+        var parseJSON = function (line) {
+          if (!line) return;
+          this.queue(JSON.parse(line.trim()))
+        };
+        process.stdin
+          .pipe(split())
+          .pipe(through(parseJSON))
+          .pipe(logfmt.streamStringify())
+          .pipe(process.stdout)
+      };
+      break;
+  }
 }
 
+stream();
