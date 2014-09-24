@@ -21,4 +21,8 @@ suite('logfmt.error', function() {
     logfmt.error(err);
     assert.equal(logfmt.stream.lines.length, 3);
   });
+
+  test("doesn't blow up on a bad error object", function(){
+    logfmt.error({})
+  })
 })
