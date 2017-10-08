@@ -404,7 +404,7 @@ app.use(logfmt.requestLogger());
 #### `logfmt.requestLogger([options], [formatter(req, res)])`
 
 If no formatter is supplied it will default to `logfmt.requestLogger.commonFormatter` which is based
-on having similiar fields to the Apache Common Log format.
+on having similar fields to the Apache Common Log format.
 
 Valid Options:
 
