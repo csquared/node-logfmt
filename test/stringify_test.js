@@ -24,7 +24,7 @@ suite('logfmt.stringify', function() {
 
   test("quotes strings with quotes in them", function(){
     var data = {foo: JSON.stringify({ bar: 'baz'})}
-    assert.equal('foo="{\"bar\":\"baz\"}"', logfmt.stringify(data))
+    assert.equal('foo="{\\"bar\\":\\"baz\\"}"', logfmt.stringify(data))
   })
 
   test("escapes quotes within strings with spaces in them", function(){
