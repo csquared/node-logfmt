@@ -55,4 +55,9 @@ suite('logfmt.stringify', function() {
     options.foo = 13
     assert.equal('foo=13 bar=abc', logfmt.stringify(options));
   })
+
+  test("nested object", function(){
+    var data = {foo: {a: 1, b: "hello world!"}, bar: "hello kitty"}
+    assert.equal("foo.a=1 foo.b=\"hello world!\" bar=\"hello kitty\"", logfmt.stringify(data))
+  })
 })

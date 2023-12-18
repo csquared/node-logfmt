@@ -30,6 +30,9 @@ var logfmt = require('logfmt');
 logfmt.stringify({foo: 'bar'});
 // 'foo=bar'
 
+logfmt.stringify({foo: 'hello kitty', bar: {a: 'hi', b: 'there'}});
+// 'foo="hello kitty" bar.a=hi bar.b=there'
+
 logfmt.parse('foo=bar');
 // {foo: 'bar'}
 ```
